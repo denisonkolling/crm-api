@@ -126,11 +126,11 @@
           "mappedType": "datetime"
         }
       },
-      "name": "campaign",
+      "name": "tab_campaigns",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "campaign_pkey",
+          "keyName": "tab_campaigns_pkey",
           "columnNames": [
             "id"
           ],
@@ -297,11 +297,11 @@
           "mappedType": "integer"
         }
       },
-      "name": "lead",
+      "name": "tab_leads",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "lead_pkey",
+          "keyName": "tab_leads_pkey",
           "columnNames": [
             "id"
           ],
@@ -313,16 +313,16 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "lead_campaign_id_foreign": {
-          "constraintName": "lead_campaign_id_foreign",
+        "tab_leads_campaign_id_foreign": {
+          "constraintName": "tab_leads_campaign_id_foreign",
           "columnNames": [
             "campaign_id"
           ],
-          "localTableName": "public.lead",
+          "localTableName": "public.tab_leads",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.campaign",
+          "referencedTableName": "public.tab_campaigns",
           "deleteRule": "set null",
           "updateRule": "cascade"
         }
@@ -409,11 +409,11 @@
           "mappedType": "integer"
         }
       },
-      "name": "event",
+      "name": "tab_events",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "event_pkey",
+          "keyName": "tab_events_pkey",
           "columnNames": [
             "id"
           ],
@@ -425,12 +425,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "event_account_id_foreign": {
-          "constraintName": "event_account_id_foreign",
+        "tab_events_account_id_foreign": {
+          "constraintName": "tab_events_account_id_foreign",
           "columnNames": [
             "account_id"
           ],
-          "localTableName": "public.event",
+          "localTableName": "public.tab_events",
           "referencedColumnNames": [
             "id"
           ],
@@ -438,16 +438,16 @@
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
-        "event_lead_id_foreign": {
-          "constraintName": "event_lead_id_foreign",
+        "tab_events_lead_id_foreign": {
+          "constraintName": "tab_events_lead_id_foreign",
           "columnNames": [
             "lead_id"
           ],
-          "localTableName": "public.event",
+          "localTableName": "public.tab_events",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.lead",
+          "referencedTableName": "public.tab_leads",
           "deleteRule": "set null",
           "updateRule": "cascade"
         }
@@ -504,11 +504,11 @@
           "mappedType": "integer"
         }
       },
-      "name": "opportunity",
+      "name": "tab_opportunities",
       "schema": "public",
       "indexes": [
         {
-          "keyName": "opportunity_pkey",
+          "keyName": "tab_opportunities_pkey",
           "columnNames": [
             "id"
           ],
@@ -520,12 +520,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "opportunity_account_id_foreign": {
-          "constraintName": "opportunity_account_id_foreign",
+        "tab_opportunities_account_id_foreign": {
+          "constraintName": "tab_opportunities_account_id_foreign",
           "columnNames": [
             "account_id"
           ],
-          "localTableName": "public.opportunity",
+          "localTableName": "public.tab_opportunities",
           "referencedColumnNames": [
             "id"
           ],
@@ -652,7 +652,7 @@
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.lead",
+          "referencedTableName": "public.tab_leads",
           "deleteRule": "set null",
           "updateRule": "cascade"
         },
@@ -665,7 +665,100 @@
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "public.opportunity",
+          "referencedTableName": "public.tab_opportunities",
+          "deleteRule": "set null",
+          "updateRule": "cascade"
+        }
+      },
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "unsigned": false,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "mappedType": "integer"
+        },
+        "first_name": {
+          "name": "first_name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "mappedType": "string"
+        },
+        "last_name": {
+          "name": "last_name",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "mappedType": "string"
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "mappedType": "string"
+        },
+        "phone": {
+          "name": "phone",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "mappedType": "string"
+        },
+        "account_id": {
+          "name": "account_id",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "mappedType": "integer"
+        }
+      },
+      "name": "tab_users",
+      "schema": "public",
+      "indexes": [
+        {
+          "keyName": "tab_users_pkey",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "tab_users_account_id_foreign": {
+          "constraintName": "tab_users_account_id_foreign",
+          "columnNames": [
+            "account_id"
+          ],
+          "localTableName": "public.tab_users",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "public.tab_accounts",
           "deleteRule": "set null",
           "updateRule": "cascade"
         }
