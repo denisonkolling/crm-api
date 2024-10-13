@@ -8,9 +8,12 @@ import { OpportunitiesModule } from './opportunities/opportunities.module';
 import { TasksModule } from './tasks/tasks.module';
 import { CampaignsModule } from './campaigns/campaigns.module';
 import { EventsModule } from './events/events.module';
+import { AccountsModule } from './accounts/accounts.module';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
+import mikroOrmConfig from './config/mikro-orm.config';
 
 @Module({
-  imports: [UserModule, ContactsModule, LeadsModule, OpportunitiesModule, TasksModule, CampaignsModule, EventsModule],
+  imports: [MikroOrmModule.forRoot(mikroOrmConfig), UserModule, ContactsModule, LeadsModule, OpportunitiesModule, TasksModule, CampaignsModule, EventsModule, AccountsModule],
   controllers: [AppController],
   providers: [AppService],
 })
