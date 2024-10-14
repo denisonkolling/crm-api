@@ -17,4 +17,7 @@ export class Account {
 
     @OneToMany(() => Contact, contact => contact.account)
     contacts = new Collection<Contact>(this);
+
+    @Property()
+    isDeleted: boolean = false;
 }
