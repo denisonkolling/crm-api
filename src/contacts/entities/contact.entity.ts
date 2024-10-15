@@ -20,4 +20,7 @@ export class Contact {
 
     @ManyToOne(() => Account)
     account!: Account;
+
+    @Property()
+    isDeleted: boolean = false;
 }

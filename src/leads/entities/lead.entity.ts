@@ -1,7 +1,7 @@
 import { Entity, PrimaryKey, Property, ManyToOne } from '@mikro-orm/core';
 import { Campaign } from '../../campaigns/entities/campaign.entity';
 
-@Entity({tableName: 'tab_leads'})
+@Entity({ tableName: 'tab_leads' })
 export class Lead {
     @PrimaryKey()
     id!: number;
@@ -20,5 +20,8 @@ export class Lead {
 
     @ManyToOne(() => Campaign, { nullable: true })
     campaign?: Campaign;
+
+    @Property()
+    isDeleted: boolean = false;
 }
 

@@ -28,4 +28,7 @@ export class Task {
 
     @ManyToOne(() => Opportunity, { nullable: true })
     opportunity?: Opportunity;
+
+    @Property()
+    isDeleted: boolean = false;
 }

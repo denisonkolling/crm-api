@@ -2,7 +2,7 @@ import { Entity, PrimaryKey, Property, ManyToOne } from '@mikro-orm/core';
 import { Account } from '../../accounts/entities/account.entity';
 
 
-@Entity({tableName: 'tab_opportunities'})
+@Entity({ tableName: 'tab_opportunities' })
 export class Opportunity {
     @PrimaryKey()
     id!: number;
@@ -18,4 +18,7 @@ export class Opportunity {
 
     @ManyToOne(() => Account)
     account!: Account;
+
+    @Property()
+    isDeleted: boolean = false;
 }

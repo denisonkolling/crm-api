@@ -20,4 +20,7 @@ export class User {
 
     @ManyToOne(() => Account, { nullable: true })
     account?: Account;
+
+    @Property()
+    isDeleted: boolean = false;
 }

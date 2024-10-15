@@ -2,7 +2,7 @@ import { Entity, PrimaryKey, Property, ManyToOne } from '@mikro-orm/core';
 import { Account } from '../../accounts/entities/account.entity';
 import { Lead } from '../../leads/entities/lead.entity';
 
-@Entity({tableName: 'tab_events'})
+@Entity({ tableName: 'tab_events' })
 export class Event {
   @PrimaryKey()
   id!: number;
@@ -27,4 +27,7 @@ export class Event {
 
   @ManyToOne(() => Lead, { nullable: true })
   lead?: Lead;
+
+  @Property()
+  isDeleted: boolean = false;
 }
