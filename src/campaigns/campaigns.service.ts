@@ -1,9 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCampaignDto } from './dto/create-campaign.dto';
 import { UpdateCampaignDto } from './dto/update-campaign.dto';
+import { EntityManager } from '@mikro-orm/postgresql';
+import { Campaign } from './entities/campaign.entity';
 
 @Injectable()
 export class CampaignsService {
+
+  constructor(
+    private readonly em: EntityManager
+  ) { }
+
   create(createCampaignDto: CreateCampaignDto) {
     return 'This action adds a new campaign';
   }
@@ -12,8 +19,12 @@ export class CampaignsService {
     return `This action returns all campaigns`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} campaign`;
+  async findOne(id: number): Promise<Campaign> {
+    const campaign = await this.em.findOne(Campaign, id);
+    if (!campaign) {
+      throw new Error('Campaign not found');
+    }
+    return campaign;
   }
 
   update(id: number, updateCampaignDto: UpdateCampaignDto) {

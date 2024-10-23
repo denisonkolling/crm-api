@@ -389,6 +389,122 @@
         ]
       }
     },
+    "/campaigns": {
+      "post": {
+        "operationId": "CampaignsController_create",
+        "summary": "Create a new campaign",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCampaignDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "campaigns"
+        ]
+      },
+      "get": {
+        "operationId": "CampaignsController_findAll",
+        "summary": "Get all campaigns",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "campaigns"
+        ]
+      }
+    },
+    "/campaigns/{id}": {
+      "get": {
+        "operationId": "CampaignsController_findOne",
+        "summary": "Get a campaign by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "campaigns"
+        ]
+      },
+      "patch": {
+        "operationId": "CampaignsController_update",
+        "summary": "Update a campaign by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCampaignDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "campaigns"
+        ]
+      },
+      "delete": {
+        "operationId": "CampaignsController_remove",
+        "summary": "Delete a campaign by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "campaigns"
+        ]
+      }
+    },
     "/opportunities": {
       "post": {
         "operationId": "OpportunitiesController_create",
@@ -608,122 +724,6 @@
         },
         "tags": [
           "tasks"
-        ]
-      }
-    },
-    "/campaigns": {
-      "post": {
-        "operationId": "CampaignsController_create",
-        "summary": "Create a new campaign",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateCampaignDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "campaigns"
-        ]
-      },
-      "get": {
-        "operationId": "CampaignsController_findAll",
-        "summary": "Get all campaigns",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "campaigns"
-        ]
-      }
-    },
-    "/campaigns/{id}": {
-      "get": {
-        "operationId": "CampaignsController_findOne",
-        "summary": "Get a campaign by id",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "campaigns"
-        ]
-      },
-      "patch": {
-        "operationId": "CampaignsController_update",
-        "summary": "Update a campaign by id",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateCampaignDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "campaigns"
-        ]
-      },
-      "delete": {
-        "operationId": "CampaignsController_remove",
-        "summary": "Delete a campaign by id",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "campaigns"
         ]
       }
     },
@@ -1034,11 +1034,46 @@
         "type": "object",
         "properties": {}
       },
-      "CreateLeadDto": {
+      "Campaign": {
         "type": "object",
         "properties": {}
       },
+      "CreateLeadDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "company": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "campaign": {
+            "$ref": "#/components/schemas/Campaign"
+          }
+        },
+        "required": [
+          "name",
+          "company",
+          "email",
+          "status",
+          "campaign"
+        ]
+      },
       "UpdateLeadDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateCampaignDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateCampaignDto": {
         "type": "object",
         "properties": {}
       },
@@ -1055,14 +1090,6 @@
         "properties": {}
       },
       "UpdateTaskDto": {
-        "type": "object",
-        "properties": {}
-      },
-      "CreateCampaignDto": {
-        "type": "object",
-        "properties": {}
-      },
-      "UpdateCampaignDto": {
         "type": "object",
         "properties": {}
       },
