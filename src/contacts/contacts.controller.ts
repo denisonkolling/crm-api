@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { ContactsService } from './contacts.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
-import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiProperty, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @Controller('contacts')
 @ApiTags('contacts')
@@ -32,16 +32,22 @@ export class ContactsController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Get a contact by id' })
+  @ApiQuery({ name: 'id', required: true, type: Number, description: 'Contact ID' })
   findOne(@Param('id') id: string) {
     return this.contactsService.findOne(+id);
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Update a contact by id' })
+  @ApiProperty({ type: 'number' })
   update(@Param('id') id: string, @Body() updateContactDto: UpdateContactDto) {
     return this.contactsService.update(+id, updateContactDto);
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete a contact by id' })
+  @ApiProperty({ type: 'number' })
   remove(@Param('id') id: string) {
     return this.contactsService.remove(+id);
   }
