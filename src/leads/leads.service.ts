@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { CreateLeadDto } from './dto/create-lead.dto';
 import { UpdateLeadDto } from './dto/update-lead.dto';
 import { EntityManager } from '@mikro-orm/postgresql';
@@ -24,19 +24,50 @@ export class LeadsService {
     return lead;
   }
 
-  findAll() {
-    return `This action returns all leads`;
+  async findAll() {
+    return await this.em.find(Lead, {});
+    //Return all leads with the campaign populated
+    //return this.em.find(Lead, {}, { populate: ['campaign'] });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} lead`;
+  async findOne(id: number) {
+    const lead = await this.em.findOne(Lead, id);
+    if (!lead) {
+      throw new NotFoundException(`Lead id: ${id} not found`);
+    }
+    return lead;
   }
 
-  update(id: number, updateLeadDto: UpdateLeadDto) {
-    return `This action updates a #${id} lead`;
+  async update(id: number, updateLeadDto: UpdateLeadDto) {
+    try {
+      const lead = await this.em.findOne(Lead, id);
+
+      if (!lead) {
+        throw new NotFoundException(`Lead with ID ${id} not found`);
+      }
+
+      this.em.assign(lead, updateLeadDto);
+
+      await this.em.persistAndFlush(lead);
+
+      return {
+        message: 'Lead successfully updated',
+        lead,
+      };
+    } catch (error) {
+      throw new InternalServerErrorException(
+        `Failed to update Lead with ID ${id}: ${error.message}`,
+      );
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} lead`;
+  async remove(id: number) {
+    const lead = await this.em.findOne(Lead, id);
+    if (!lead) {
+      throw new NotFoundException(`Lead id: ${id} not found`);
+    }
+    lead.isDeleted = true;
+    await this.em.persistAndFlush(lead);
+    return lead;
   }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCampaignDto } from './dto/create-campaign.dto';
 import { UpdateCampaignDto } from './dto/update-campaign.dto';
 import { EntityManager } from '@mikro-orm/postgresql';
@@ -22,7 +22,7 @@ export class CampaignsService {
   async findOne(id: number): Promise<Campaign> {
     const campaign = await this.em.findOne(Campaign, id);
     if (!campaign) {
-      throw new Error('Campaign not found');
+      throw new NotFoundException(`Campaign id: ${id} not found`);
     }
     return campaign;
   }
