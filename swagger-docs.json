@@ -1071,7 +1071,43 @@
       },
       "CreateCampaignDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "startDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "endDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "leads": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "status",
+          "startDate",
+          "endDate",
+          "leads"
+        ]
       },
       "UpdateCampaignDto": {
         "type": "object",

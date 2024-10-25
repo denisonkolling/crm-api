@@ -27,6 +27,4 @@ const mikroOrmConfig: Options = {
 
 };
 
-
-
 export default mikroOrmConfig;

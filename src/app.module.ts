@@ -13,7 +13,17 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import mikroOrmConfig from './config/mikro-orm.config';
 
 @Module({
-  imports: [MikroOrmModule.forRoot(mikroOrmConfig), UserModule, ContactsModule, LeadsModule, OpportunitiesModule, TasksModule, CampaignsModule, EventsModule, AccountsModule],
+  imports: [
+    MikroOrmModule.forRoot(mikroOrmConfig),
+    UserModule,
+    ContactsModule,
+    LeadsModule,
+    OpportunitiesModule,
+    TasksModule,
+    CampaignsModule,
+    EventsModule,
+    AccountsModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
