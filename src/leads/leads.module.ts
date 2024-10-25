@@ -6,9 +6,12 @@ import { Lead } from './entities/lead.entity';
 import { CampaignsModule } from 'src/campaigns/campaigns.module';
 
 @Module({
-  imports: [MikroOrmModule.forFeature([Lead]), CampaignsModule],
+  imports: [
+    MikroOrmModule.forFeature([Lead]),
+    CampaignsModule
+  ],
   controllers: [LeadsController],
   providers: [LeadsService],
   exports: [LeadsService],
 })
-export class LeadsModule {}
+export class LeadsModule { }
