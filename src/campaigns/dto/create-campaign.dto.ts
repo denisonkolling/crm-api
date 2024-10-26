@@ -4,22 +4,19 @@ import { Lead } from "src/leads/entities/lead.entity";
 export class CreateCampaignDto {
 
     @ApiProperty()
-    id!: number;
+    name: string;
 
     @ApiProperty()
-    name!: string;
+    description: string;
 
     @ApiProperty()
-    description!: string;
+    status: string; // e.g., Planned, Active, Completed, Archived
 
     @ApiProperty()
-    status!: string; // e.g., Planned, Active, Completed, Archived
+    startDate: Date;
 
     @ApiProperty()
-    startDate!: Date;
-
-    @ApiProperty()
-    endDate!: Date;
+    endDate: Date;
 
     @ApiProperty()
     leads: Lead[];

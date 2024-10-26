@@ -4,16 +4,16 @@ import { Campaign } from "src/campaigns/entities/campaign.entity";
 export class CreateLeadDto {
 
     @ApiProperty()
-    name!: string;
+    name: string;
 
     @ApiProperty()
-    company!: string;
+    company: string;
 
     @ApiProperty()
-    email!: string;
+    email: string;
 
     @ApiProperty()
-    status!: string; // e.g., New, Contacted, Qualified, etc.
+    status: string; // e.g., New, Contacted, Qualified, etc.
 
     @ApiProperty()
     campaign?: Campaign;

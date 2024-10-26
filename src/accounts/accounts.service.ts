@@ -29,7 +29,11 @@ export class AccountsService {
   }
 
   async findOne(id: number): Promise<Account> {
-    return this.em.findOne(Account, id, { populate: ['contacts'] });
+    const account = await this.em.findOne(Account, id, { populate: ['contacts'] });
+    if (!account) {
+      throw new NotFoundException(`Account with id ${id} not found`);
+    }
+    return account;
   }
 
   async update(id: number, updateAccountDto: UpdateAccountDto) {
