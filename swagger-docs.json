@@ -112,6 +112,163 @@
         ]
       }
     },
+    "/accounts": {
+      "post": {
+        "operationId": "AccountsController_create",
+        "summary": "Create a new account",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAccountDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "accounts"
+        ]
+      },
+      "get": {
+        "operationId": "AccountsController_findAll",
+        "summary": "Get all accounts with pagination and sorting options",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number to retrieve (default is 1)",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of accounts to retrieve per page (default is 10)",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "description": "Field by which to sort the accounts (default is \"id\")",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "description": "Order in which to sort the accounts (default is \"asc\")",
+            "schema": {
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "accounts"
+        ]
+      }
+    },
+    "/accounts/{id}": {
+      "get": {
+        "operationId": "AccountsController_findOne",
+        "summary": "Get an account by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "accounts"
+        ]
+      },
+      "patch": {
+        "operationId": "AccountsController_update",
+        "summary": "Update an account by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAccountDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "accounts"
+        ]
+      },
+      "delete": {
+        "operationId": "AccountsController_remove",
+        "summary": "Delete an account by id",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "accounts"
+        ]
+      }
+    },
     "/contacts": {
       "post": {
         "operationId": "ContactsController_create",
@@ -616,163 +773,6 @@
         ]
       }
     },
-    "/accounts": {
-      "post": {
-        "operationId": "AccountsController_create",
-        "summary": "Create a new account",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAccountDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "accounts"
-        ]
-      },
-      "get": {
-        "operationId": "AccountsController_findAll",
-        "summary": "Get all accounts with pagination and sorting options",
-        "parameters": [
-          {
-            "name": "page",
-            "required": false,
-            "in": "query",
-            "description": "Page number to retrieve (default is 1)",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "limit",
-            "required": false,
-            "in": "query",
-            "description": "Number of accounts to retrieve per page (default is 10)",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "sortBy",
-            "required": false,
-            "in": "query",
-            "description": "Field by which to sort the accounts (default is \"id\")",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "sortOrder",
-            "required": false,
-            "in": "query",
-            "description": "Order in which to sort the accounts (default is \"asc\")",
-            "schema": {
-              "enum": [
-                "asc",
-                "desc"
-              ],
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "accounts"
-        ]
-      }
-    },
-    "/accounts/{id}": {
-      "get": {
-        "operationId": "AccountsController_findOne",
-        "summary": "Get an account by id",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "accounts"
-        ]
-      },
-      "patch": {
-        "operationId": "AccountsController_update",
-        "summary": "Update an account by id",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateAccountDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "accounts"
-        ]
-      },
-      "delete": {
-        "operationId": "AccountsController_remove",
-        "summary": "Delete an account by id",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "accounts"
-        ]
-      }
-    },
     "/tasks": {
       "post": {
         "operationId": "TasksController_create",
@@ -1020,9 +1020,62 @@
     "schemas": {
       "CreateUserDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "accountId": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "firstName",
+          "lastName",
+          "email",
+          "phone",
+          "accountId"
+        ]
       },
       "UpdateUserDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateAccountDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "industry": {
+            "type": "string"
+          },
+          "website": {
+            "type": "string"
+          },
+          "contacts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "industry",
+          "website",
+          "contacts"
+        ]
+      },
+      "UpdateAccountDto": {
         "type": "object",
         "properties": {}
       },
@@ -1214,39 +1267,41 @@
         "type": "object",
         "properties": {}
       },
-      "CreateAccountDto": {
+      "CreateTaskDto": {
         "type": "object",
         "properties": {
-          "name": {
+          "title": {
             "type": "string"
           },
-          "industry": {
+          "description": {
             "type": "string"
           },
-          "website": {
+          "status": {
             "type": "string"
           },
-          "contacts": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+          "dueDate": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "accountId": {
+            "type": "number"
+          },
+          "leadId": {
+            "type": "number"
+          },
+          "opportunityId": {
+            "type": "number"
           }
         },
         "required": [
-          "name",
-          "industry",
-          "website",
-          "contacts"
+          "title",
+          "description",
+          "status",
+          "dueDate",
+          "accountId",
+          "leadId",
+          "opportunityId"
         ]
-      },
-      "UpdateAccountDto": {
-        "type": "object",
-        "properties": {}
-      },
-      "CreateTaskDto": {
-        "type": "object",
-        "properties": {}
       },
       "UpdateTaskDto": {
         "type": "object",
@@ -1254,7 +1309,40 @@
       },
       "CreateEventDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "location": {
+            "type": "string"
+          },
+          "startTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "endTime": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "accountId": {
+            "type": "number"
+          },
+          "leadId": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "location",
+          "startTime",
+          "endTime",
+          "accountId",
+          "leadId"
+        ]
       },
       "UpdateEventDto": {
         "type": "object",

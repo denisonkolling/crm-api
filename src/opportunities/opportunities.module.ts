@@ -14,5 +14,6 @@ import { AccountsModule } from 'src/accounts/accounts.module';
   ],
   controllers: [OpportunitiesController],
   providers: [OpportunitiesService],
+  exports: [OpportunitiesService]
 })
 export class OpportunitiesModule { }
