@@ -6,6 +6,7 @@ import { Lead } from '../leads/entities/lead.entity';
 import { Campaign } from '../campaigns/entities/campaign.entity';
 import { Opportunity } from '../opportunities/entities/opportunity.entity';
 import { Task } from '../tasks/entities/task.entity';
+import { Event } from '../events/entities/event.entity';
 
 async function seedAccounts() {
     const orm = await MikroORM.init();
@@ -80,6 +81,29 @@ async function seedAccounts() {
         task.status = faker.helpers.arrayElement(taskStatuses);
         task.lead = em.getReference(Lead, faker.number.int({ min: 1, max: 10 }));
         em.persist(task);
+    }
+
+    // Create data for the Event table
+    for (let i = 0; i < 10; i++) {
+        const event = new Event();
+
+        event.title = faker.lorem.words(3);
+        event.description = faker.lorem.sentences(2);
+        event.location = faker.location.city();
+
+        // Gera um intervalo de tempo para o evento
+        const startTime = faker.date.soon();
+        const endTime = faker.date.between({ from: startTime, to: new Date(startTime.getTime() + 2 * 60 * 60 * 1000) }); // Ex: 2 horas depois
+
+        event.startTime = startTime;
+        event.endTime = endTime;
+
+        // Referencia opcional para outras entidades
+        event.account = em.getReference(Account, faker.number.int({ min: 1, max: 10 }));
+        event.lead = em.getReference(Lead, faker.number.int({ min: 1, max: 10 }));
+
+        // Persiste o evento
+        em.persist(event);
     }
 
     // Flush changes to the database
