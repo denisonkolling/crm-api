@@ -643,7 +643,7 @@
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
+          "nullable": true,
           "mappedType": "integer"
         },
         "description": {
@@ -801,6 +801,7 @@
             "id"
           ],
           "referencedTableName": "public.tab_accounts",
+          "deleteRule": "set null",
           "updateRule": "cascade"
         },
         "tab_opportunities_owner_id_foreign": {
