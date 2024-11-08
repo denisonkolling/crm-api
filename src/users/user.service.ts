@@ -3,20 +3,30 @@ import { EntityManager } from '@mikro-orm/core';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AccountsService } from 'src/accounts/accounts.service';
 
 
 @Injectable()
 export class UserService {
-  constructor(private readonly em: EntityManager) { }
+
+  constructor(
+    private readonly em: EntityManager,
+    private readonly accountsService: AccountsService,
+  ) { }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    try {
-      const user = this.em.create(User, createUserDto);
-      await this.em.persistAndFlush(user);
-      return user;
-    } catch (error) {
-      throw new InternalServerErrorException(`Failed to create user: ${error.message}`);
+    const user = new User();
+
+    if (createUserDto.accountId) {
+      user.account = await this.accountsService.findOne(createUserDto.accountId);
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { accountId, ...dtoWithoutIds } = createUserDto;
+
+    this.em.assign(user, dtoWithoutIds);
+    await this.em.persistAndFlush(user);
+    return user;
   }
 
   async findAll(): Promise<User[]> {
