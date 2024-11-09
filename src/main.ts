@@ -19,7 +19,10 @@ async function bootstrap() {
   writeFileSync('./swagger-docs.json', JSON.stringify(document, null, 2));
 
   SwaggerModule.setup('api', app, document);
-  
-  await app.listen(3000);
+
+  await app.listen(3000, () => {
+    console.log("\x1b[1m\x1b[32mSwagger is running on: http://localhost:3000/api\x1b[0m");
+  });
+
 }
 bootstrap();

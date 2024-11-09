@@ -8,5 +8,6 @@ import { Contact } from './entities/contact.entity';
   imports: [MikroOrmModule.forFeature([Contact])],
   controllers: [ContactsController],
   providers: [ContactsService],
+  exports: [ContactsService],
 })
 export class ContactsModule { }

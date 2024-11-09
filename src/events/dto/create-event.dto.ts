@@ -18,9 +18,9 @@ export class CreateEventDto {
     endTime: Date;
 
     @ApiProperty()
-    accountId?: number;
+    accountReferenceId?: number;
 
     @ApiProperty()
-    leadId?: number;
+    leadReferenceId?: number;
 
 }

@@ -48,8 +48,13 @@ export class DatabaseSeeder extends Seeder {
     for (let i = 0; i < 10; i++) {
       const lead = new Lead();
       lead.name = faker.person.fullName();
-      lead.company = faker.company.name();
-      lead.email = faker.internet.email();
+
+      // --------------------------------------
+      //⚠️ FIXME - This is not working
+      // lead.company = faker.company.name();
+      // lead.email = faker.internet.email();
+      // --------------------------------------
+
       lead.status = faker.helpers.arrayElement(leadStatuses);
       lead.campaign = i % 2 === 0 ? em.getReference(Campaign, faker.number.int({ min: 1, max: 5 })) : undefined;
       em.persist(lead);

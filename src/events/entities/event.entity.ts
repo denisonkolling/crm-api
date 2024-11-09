@@ -22,6 +22,12 @@ export class Event {
   @Property()
   endTime!: Date;
 
+  @Property({ nullable: true })
+  accountReferenceId?: number;
+
+  @Property({ nullable: true })
+  leadReferenceId?: number;
+
   @ManyToOne(() => Account, { nullable: true })
   account?: Account;
 

@@ -1030,6 +1030,9 @@
           "email": {
             "type": "string"
           },
+          "password": {
+            "type": "string"
+          },
           "phone": {
             "type": "string"
           },
@@ -1041,6 +1044,7 @@
           "firstName",
           "lastName",
           "email",
+          "password",
           "phone",
           "accountId"
         ]
@@ -1114,35 +1118,31 @@
         "type": "object",
         "properties": {}
       },
-      "Campaign": {
-        "type": "object",
-        "properties": {}
-      },
       "CreateLeadDto": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string"
           },
-          "company": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
           "status": {
             "type": "string"
           },
-          "campaign": {
-            "$ref": "#/components/schemas/Campaign"
+          "contactReferenceId": {
+            "type": "number"
+          },
+          "accountReferenceId": {
+            "type": "number"
+          },
+          "campaignReferenceId": {
+            "type": "number"
           }
         },
         "required": [
           "name",
-          "company",
-          "email",
           "status",
-          "campaign"
+          "contactReferenceId",
+          "accountReferenceId",
+          "campaignReferenceId"
         ]
       },
       "UpdateLeadDto": {
@@ -1327,10 +1327,10 @@
             "format": "date-time",
             "type": "string"
           },
-          "accountId": {
+          "accountReferenceId": {
             "type": "number"
           },
-          "leadId": {
+          "leadReferenceId": {
             "type": "number"
           }
         },
@@ -1340,8 +1340,8 @@
           "location",
           "startTime",
           "endTime",
-          "accountId",
-          "leadId"
+          "accountReferenceId",
+          "leadReferenceId"
         ]
       },
       "UpdateEventDto": {

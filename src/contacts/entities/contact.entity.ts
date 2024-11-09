@@ -19,7 +19,7 @@ export class Contact {
     phone!: string;
 
     @ManyToOne(() => Account)
-    account!: Account;
+    account?: Account;
 
     @Property()
     isDeleted: boolean = false;

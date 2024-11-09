@@ -20,6 +20,12 @@ export class Task {
     @Property()
     dueDate!: Date;
 
+    @Property()
+    accountReferenceId?: number;
+
+    @Property()
+    leadReferenceId?: number;
+
     @ManyToOne(() => Account, { nullable: true })
     account?: Account;
 

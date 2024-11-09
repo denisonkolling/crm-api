@@ -16,9 +16,6 @@ export class Opportunity {
     @Property()
     stage!: string; // e.g., Prospecting, Qualification, Closed Won, Closed Lost
 
-    @ManyToOne(() => Account, { nullable: true })
-    account?: Account;
-
     @Property()
     description?: string;
 
@@ -40,9 +37,6 @@ export class Opportunity {
     @Property()
     leadSource?: string;
 
-    @ManyToOne(() => User, { nullable: true })
-    owner?: User;
-
     @Property()
     mainCompetitor?: string;
 
@@ -57,4 +51,10 @@ export class Opportunity {
 
     @Property()
     isDeleted: boolean = false;
+
+    @ManyToOne(() => Account, { nullable: true })
+    account?: Account;
+
+    @ManyToOne(() => User, { nullable: true })
+    owner?: User;
 }

@@ -5,6 +5,8 @@ import { EntityManager } from '@mikro-orm/postgresql';
 import { Event } from './entities/event.entity';
 import { AccountsService } from 'src/accounts/accounts.service';
 import { LeadsService } from 'src/leads/leads.service';
+import { Lead } from 'src/leads/entities/lead.entity';
+import { Account } from 'src/accounts/entities/account.entity';
 
 @Injectable()
 export class EventsService {
@@ -17,17 +19,9 @@ export class EventsService {
 
   async create(createEventDto: CreateEventDto): Promise<Event> {
     const event = new Event();
-
-    if (createEventDto.accountId) {
-      event.account = await this.accountsService.findOne(createEventDto.accountId);
-    }
-
-    if (createEventDto.leadId) {
-      event.lead = await this.leadsService.findOne(createEventDto.leadId);
-    }
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { accountId, leadId, ...dtoWithoutIds } = createEventDto;
-    this.em.assign(event, dtoWithoutIds);
+    event.account = await this.findAccountById(createEventDto.accountReferenceId);
+    event.lead = await this.findLeadById(createEventDto.leadReferenceId);
+    this.em.assign(event, createEventDto);
     await this.em.persistAndFlush(event);
     return event;
   }
@@ -57,4 +51,15 @@ export class EventsService {
   remove(id: number): Promise<number> {
     return this.em.nativeDelete(Event, id);
   }
+
+  private async findAccountById(accountReferenceId?: number): Promise<Account | undefined> {
+    if (!accountReferenceId) return undefined;
+    return await this.accountsService.findOne(accountReferenceId);
+  }
+
+  private async findLeadById(leadReferenceId?: number): Promise<Lead | undefined> {
+    if (!leadReferenceId) return undefined;
+    return await this.leadsService.findOne(leadReferenceId);
+  }
+
 }
