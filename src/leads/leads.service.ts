@@ -4,24 +4,39 @@ import { UpdateLeadDto } from './dto/update-lead.dto';
 import { EntityManager } from '@mikro-orm/postgresql';
 import { Lead } from './entities/lead.entity';
 import { CampaignsService } from 'src/campaigns/campaigns.service';
+import { Campaign } from 'src/campaigns/entities/campaign.entity';
+import { Contact } from 'src/contacts/entities/contact.entity';
+import { ContactsService } from 'src/contacts/contacts.service';
+import { AccountsService } from 'src/accounts/accounts.service';
+import { Account } from 'src/accounts/entities/account.entity';
+import { plainToClass } from 'class-transformer';
+import { LeadResponseDto } from './dto/response-lead.dto';
 
 @Injectable()
 export class LeadsService {
 
   constructor(
     private readonly em: EntityManager,
-    private readonly campaignsService: CampaignsService
+    private readonly campaignsService: CampaignsService,
+    private readonly contactsService: ContactsService,
+    private readonly accountsService: AccountsService,
   ) { }
 
   async create(createLeadDto: CreateLeadDto) {
     const lead = new Lead();
-
-    if (createLeadDto.campaign) {
-      lead.campaign = await this.campaignsService.findOne(createLeadDto.campaign.id);
-    }
+    lead.campaign = await this.findCampaignById(createLeadDto.campaignReferenceId);
+    lead.contact = await this.findContactById(createLeadDto.contactReferenceId);
+    lead.account = await this.findAccountById(createLeadDto.accountReferenceId);
     this.em.assign(lead, createLeadDto);
     await this.em.persistAndFlush(lead);
-    return lead;
+
+
+     // Transformando o objeto Lead em LeadResponseDto
+     const leadResponse = plainToClass(LeadResponseDto, lead, {
+      excludeExtraneousValues: true, // Exclui propriedades que não são anotadas com @Expose()
+    });
+
+    return leadResponse;
   }
 
   async findAll() {
@@ -69,5 +84,20 @@ export class LeadsService {
     lead.isDeleted = true;
     await this.em.persistAndFlush(lead);
     return lead;
+  }
+
+  private async findCampaignById(campaignReferenceId?: number): Promise<Campaign | undefined> {
+    if (!campaignReferenceId) return undefined;
+    return await this.campaignsService.findOne(campaignReferenceId);
+  }
+
+  private async findContactById(contactReferenceId?: number): Promise<Contact | undefined> {
+    if (!contactReferenceId) return undefined;
+    return await this.contactsService.findOne(contactReferenceId);
+  }
+
+  private async findAccountById(accountReferenceId?: number): Promise<Account | undefined> {
+    if (!accountReferenceId) return undefined;
+    return await this.accountsService.findOne(accountReferenceId);
   }
 }

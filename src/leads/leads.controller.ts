@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
 import { LeadsService } from './leads.service';
 import { CreateLeadDto } from './dto/create-lead.dto';
 import { UpdateLeadDto } from './dto/update-lead.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { LeadResponseDto } from './dto/response-lead.dto';
 
 @Controller('leads')
 @ApiTags('leads')
@@ -10,7 +11,8 @@ export class LeadsController {
   constructor(private readonly leadsService: LeadsService) {}
 
   @Post()
-  create(@Body() createLeadDto: CreateLeadDto) {
+  @UsePipes(new ValidationPipe({ transform: true })) // Valida e transforma automaticamente
+  async create(@Body() createLeadDto: CreateLeadDto): Promise<LeadResponseDto> {
     return this.leadsService.create(createLeadDto);
   }
 
