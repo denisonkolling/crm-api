@@ -10,6 +10,7 @@ import { CampaignsModule } from './campaigns/campaigns.module';
 import { EventsModule } from './events/events.module';
 import { AccountsModule } from './accounts/accounts.module';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
+import { TagsModule } from './tags/tags.module';
 import mikroOrmConfig from './config/mikro-orm.config';
 
 @Module({
@@ -22,7 +23,8 @@ import mikroOrmConfig from './config/mikro-orm.config';
     TasksModule,
     CampaignsModule,
     EventsModule,
-    AccountsModule
+    AccountsModule,
+    TagsModule
   ],
   controllers: [AppController],
   providers: [AppService],

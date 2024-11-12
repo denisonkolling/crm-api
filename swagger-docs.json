@@ -994,6 +994,135 @@
           "events"
         ]
       }
+    },
+    "/tags": {
+      "post": {
+        "operationId": "TagsController_createTag",
+        "summary": "Create a new tag",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTagDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "tags"
+        ]
+      }
+    },
+    "/tags/entity": {
+      "post": {
+        "operationId": "TagsController_addTagToEntity",
+        "summary": "Add tag to entity",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TagEntityDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "tags"
+        ]
+      },
+      "delete": {
+        "operationId": "TagsController_removeTagFromEntity",
+        "summary": "Remove tag from entity",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TagEntityDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "tags"
+        ]
+      }
+    },
+    "/tags/entity/{entityType}/{entityId}": {
+      "get": {
+        "operationId": "TagsController_getEntityTags",
+        "summary": "Get all tags for an entity",
+        "parameters": [
+          {
+            "name": "entityType",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "entityId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "tags"
+        ]
+      }
+    },
+    "/tags/popular": {
+      "get": {
+        "operationId": "TagsController_getPopularTags",
+        "summary": "Get popular tags",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "tags"
+        ]
+      }
     }
   },
   "info": {
@@ -1283,13 +1412,13 @@
             "format": "date-time",
             "type": "string"
           },
-          "accountId": {
+          "accountReferenceId": {
             "type": "number"
           },
-          "leadId": {
+          "leadReferenceId": {
             "type": "number"
           },
-          "opportunityId": {
+          "opportunityReferenceId": {
             "type": "number"
           }
         },
@@ -1298,9 +1427,9 @@
           "description",
           "status",
           "dueDate",
-          "accountId",
-          "leadId",
-          "opportunityId"
+          "accountReferenceId",
+          "leadReferenceId",
+          "opportunityReferenceId"
         ]
       },
       "UpdateTaskDto": {
@@ -1347,6 +1476,40 @@
       "UpdateEventDto": {
         "type": "object",
         "properties": {}
+      },
+      "CreateTagDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "color"
+        ]
+      },
+      "TagEntityDto": {
+        "type": "object",
+        "properties": {
+          "tagId": {
+            "type": "number"
+          },
+          "entityType": {
+            "type": "string"
+          },
+          "entityId": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "tagId",
+          "entityType",
+          "entityId"
+        ]
       }
     }
   }
