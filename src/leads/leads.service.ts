@@ -22,22 +22,29 @@ export class LeadsService {
     private readonly accountsService: AccountsService,
   ) { }
 
+  // ------------------------------------------------------------------------------------------------
+  // ⚠️ Método para maior controle do objeto de retorno da API
+  // ------------------------------------------------------------------------------------------------
   async create(createLeadDto: CreateLeadDto) {
     const lead = new Lead();
+    lead.account = await this.findAccountById(createLeadDto.accountReferenceId);
     lead.campaign = await this.findCampaignById(createLeadDto.campaignReferenceId);
     lead.contact = await this.findContactById(createLeadDto.contactReferenceId);
-    lead.account = await this.findAccountById(createLeadDto.accountReferenceId);
     this.em.assign(lead, createLeadDto);
     await this.em.persistAndFlush(lead);
-
-
-     // Transformando o objeto Lead em LeadResponseDto
-     const leadResponse = plainToClass(LeadResponseDto, lead, {
-      excludeExtraneousValues: true, // Exclui propriedades que não são anotadas com @Expose()
-    });
-
+    const leadResponse = plainToClass(LeadResponseDto, lead, { excludeExtraneousValues: true, });
     return leadResponse;
   }
+
+  // async create(createLeadDto: CreateLeadDto) {
+  //   const lead = new Lead();
+  //   lead.account = await this.findAccountById(createLeadDto.accountReferenceId);
+  //   lead.campaign = await this.findCampaignById(createLeadDto.campaignReferenceId);
+  //   lead.contact = await this.findContactById(createLeadDto.contactReferenceId);
+  //   this.em.assign(lead, createLeadDto);
+  //   await this.em.persistAndFlush(lead);
+  //   return lead;
+  // }
 
   async findAll() {
     return await this.em.find(Lead, {});
@@ -86,6 +93,11 @@ export class LeadsService {
     return lead;
   }
 
+  private async findAccountById(accountReferenceId?: number): Promise<Account | undefined> {
+    if (!accountReferenceId) return undefined;
+    return await this.accountsService.findOne(accountReferenceId);
+  }
+
   private async findCampaignById(campaignReferenceId?: number): Promise<Campaign | undefined> {
     if (!campaignReferenceId) return undefined;
     return await this.campaignsService.findOne(campaignReferenceId);
@@ -94,10 +106,5 @@ export class LeadsService {
   private async findContactById(contactReferenceId?: number): Promise<Contact | undefined> {
     if (!contactReferenceId) return undefined;
     return await this.contactsService.findOne(contactReferenceId);
-  }
-
-  private async findAccountById(accountReferenceId?: number): Promise<Account | undefined> {
-    if (!accountReferenceId) return undefined;
-    return await this.accountsService.findOne(accountReferenceId);
   }
 }

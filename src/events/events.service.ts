@@ -26,8 +26,6 @@ export class EventsService {
     return event;
   }
 
-
-
   async findAll(): Promise<Event[]> {
     return await this.em.find(Event, {});
   }

@@ -8,13 +8,21 @@ import { LeadResponseDto } from './dto/response-lead.dto';
 @Controller('leads')
 @ApiTags('leads')
 export class LeadsController {
-  constructor(private readonly leadsService: LeadsService) {}
+  constructor(private readonly leadsService: LeadsService) { }
 
+  // ------------------------------------------------------------------------------------------------
+  // ⚠️ Método para maior controle do objeto de retorno da API
+  // ------------------------------------------------------------------------------------------------
   @Post()
   @UsePipes(new ValidationPipe({ transform: true })) // Valida e transforma automaticamente
   async create(@Body() createLeadDto: CreateLeadDto): Promise<LeadResponseDto> {
     return this.leadsService.create(createLeadDto);
   }
+
+  // @Post()
+  // create(@Body() createLeadDto: CreateLeadDto) {
+  //   return this.leadsService.create(createLeadDto);
+  // }
 
   @Get()
   findAll() {
