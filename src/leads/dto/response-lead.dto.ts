@@ -13,6 +13,11 @@ class AccountResponseDto {
   name: string;
 }
 
+class CampaignResponseDto {
+  @Expose()
+  name: string;
+}
+
 export class LeadResponseDto {
   @Expose()
   id: number;
@@ -30,13 +35,20 @@ export class LeadResponseDto {
   accountReferenceId?: number;
 
   @Expose()
+  campaignReferenceId?: number;
+
+  @Expose()
   isDeleted: boolean;
 
   @Expose()
-  @Type(() => ContactResponseDto) // Transformar o objeto contact
+  @Type(() => ContactResponseDto)
   contact: ContactResponseDto;
 
   @Expose()
-  @Type(() => AccountResponseDto) // Transformar o objeto account
+  @Type(() => AccountResponseDto)
   account: AccountResponseDto;
+
+  @Expose()
+  @Type(() => CampaignResponseDto)
+  campaign: CampaignResponseDto;
 }

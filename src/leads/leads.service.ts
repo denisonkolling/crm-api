@@ -22,9 +22,7 @@ export class LeadsService {
     private readonly accountsService: AccountsService,
   ) { }
 
-  // ------------------------------------------------------------------------------------------------
-  // ⚠️ Método para maior controle do objeto de retorno da API
-  // ------------------------------------------------------------------------------------------------
+
   async create(createLeadDto: CreateLeadDto) {
     const lead = new Lead();
     lead.account = await this.findAccountById(createLeadDto.accountReferenceId);
@@ -35,16 +33,6 @@ export class LeadsService {
     const leadResponse = plainToClass(LeadResponseDto, lead, { excludeExtraneousValues: true, });
     return leadResponse;
   }
-
-  // async create(createLeadDto: CreateLeadDto) {
-  //   const lead = new Lead();
-  //   lead.account = await this.findAccountById(createLeadDto.accountReferenceId);
-  //   lead.campaign = await this.findCampaignById(createLeadDto.campaignReferenceId);
-  //   lead.contact = await this.findContactById(createLeadDto.contactReferenceId);
-  //   this.em.assign(lead, createLeadDto);
-  //   await this.em.persistAndFlush(lead);
-  //   return lead;
-  // }
 
   async findAll() {
     return await this.em.find(Lead, {});
