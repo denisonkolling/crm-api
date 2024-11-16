@@ -10,6 +10,7 @@ export class ContactsController {
   constructor(private readonly contactsService: ContactsService) { }
 
   @Post()
+  @ApiOperation({ summary: 'Create a new contact' })
   create(@Body() createContactDto: CreateContactDto) {
     return this.contactsService.create(createContactDto);
   }

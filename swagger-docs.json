@@ -4,6 +4,7 @@
     "/user": {
       "post": {
         "operationId": "UserController_create",
+        "summary": "Create a new user",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -26,6 +27,7 @@
       },
       "get": {
         "operationId": "UserController_findAll",
+        "summary": "Get all users",
         "parameters": [],
         "responses": {
           "200": {
@@ -40,6 +42,7 @@
     "/user/{id}": {
       "get": {
         "operationId": "UserController_findOne",
+        "summary": "Get a user by id",
         "parameters": [
           {
             "name": "id",
@@ -61,6 +64,7 @@
       },
       "patch": {
         "operationId": "UserController_update",
+        "summary": "Update a user by id",
         "parameters": [
           {
             "name": "id",
@@ -92,6 +96,7 @@
       },
       "delete": {
         "operationId": "UserController_remove",
+        "summary": "Delete a user by id",
         "parameters": [
           {
             "name": "id",
@@ -272,6 +277,7 @@
     "/contacts": {
       "post": {
         "operationId": "ContactsController_create",
+        "summary": "Create a new contact",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -438,6 +444,7 @@
     "/leads": {
       "post": {
         "operationId": "LeadsController_create",
+        "summary": "Create a new lead",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -460,6 +467,7 @@
       },
       "get": {
         "operationId": "LeadsController_findAll",
+        "summary": "Get all leads",
         "parameters": [],
         "responses": {
           "200": {
@@ -474,6 +482,7 @@
     "/leads/{id}": {
       "get": {
         "operationId": "LeadsController_findOne",
+        "summary": "Get a lead by id",
         "parameters": [
           {
             "name": "id",
@@ -495,6 +504,7 @@
       },
       "patch": {
         "operationId": "LeadsController_update",
+        "summary": "Update a lead by id",
         "parameters": [
           {
             "name": "id",
@@ -526,6 +536,7 @@
       },
       "delete": {
         "operationId": "LeadsController_remove",
+        "summary": "Delete a lead by id",
         "parameters": [
           {
             "name": "id",
@@ -665,6 +676,7 @@
     "/opportunities": {
       "post": {
         "operationId": "OpportunitiesController_create",
+        "summary": "Create a new opportunity",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -687,6 +699,7 @@
       },
       "get": {
         "operationId": "OpportunitiesController_findAll",
+        "summary": "Get all opportunities",
         "parameters": [],
         "responses": {
           "200": {
@@ -701,6 +714,7 @@
     "/opportunities/{id}": {
       "get": {
         "operationId": "OpportunitiesController_findOne",
+        "summary": "Get an opportunity by id",
         "parameters": [
           {
             "name": "id",
@@ -722,6 +736,7 @@
       },
       "patch": {
         "operationId": "OpportunitiesController_update",
+        "summary": "Update an opportunity by id",
         "parameters": [
           {
             "name": "id",
@@ -753,6 +768,7 @@
       },
       "delete": {
         "operationId": "OpportunitiesController_remove",
+        "summary": "Delete an opportunity by id",
         "parameters": [
           {
             "name": "id",
@@ -776,6 +792,7 @@
     "/tasks": {
       "post": {
         "operationId": "TasksController_create",
+        "summary": "Create a new task",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -798,6 +815,7 @@
       },
       "get": {
         "operationId": "TasksController_findAll",
+        "summary": "Get all tasks",
         "parameters": [],
         "responses": {
           "200": {
@@ -812,6 +830,7 @@
     "/tasks/{id}": {
       "get": {
         "operationId": "TasksController_findOne",
+        "summary": "Get a task by id",
         "parameters": [
           {
             "name": "id",
@@ -833,6 +852,7 @@
       },
       "patch": {
         "operationId": "TasksController_update",
+        "summary": "Update a task by id",
         "parameters": [
           {
             "name": "id",
@@ -864,6 +884,7 @@
       },
       "delete": {
         "operationId": "TasksController_remove",
+        "summary": "Delete a task by id",
         "parameters": [
           {
             "name": "id",
@@ -887,6 +908,7 @@
     "/events": {
       "post": {
         "operationId": "EventsController_create",
+        "summary": "Create a new event",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -909,6 +931,7 @@
       },
       "get": {
         "operationId": "EventsController_findAll",
+        "summary": "Get all events",
         "parameters": [],
         "responses": {
           "200": {
@@ -923,6 +946,7 @@
     "/events/{id}": {
       "get": {
         "operationId": "EventsController_findOne",
+        "summary": "Get an event by id",
         "parameters": [
           {
             "name": "id",
@@ -944,6 +968,7 @@
       },
       "patch": {
         "operationId": "EventsController_update",
+        "summary": "Update an event by id",
         "parameters": [
           {
             "name": "id",
@@ -975,6 +1000,7 @@
       },
       "delete": {
         "operationId": "EventsController_remove",
+        "summary": "Delete an event by id",
         "parameters": [
           {
             "name": "id",
