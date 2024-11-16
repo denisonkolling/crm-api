@@ -1,16 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { TaskResponseDto } from './dto/response-task.dto';
+// import { TaskResponseDto } from './dto/response-task.dto';
 
 @Controller('tasks')
 @ApiTags('tasks')
 export class TasksController {
-  constructor(private readonly tasksService: TasksService) {}
+  constructor(private readonly tasksService: TasksService) { }
 
   @Post()
-  create(@Body() createTaskDto: CreateTaskDto) {
+  @UsePipes(new ValidationPipe({ transform: true }))
+  create(@Body() createTaskDto: CreateTaskDto): Promise<TaskResponseDto> {
     return this.tasksService.create(createTaskDto);
   }
 

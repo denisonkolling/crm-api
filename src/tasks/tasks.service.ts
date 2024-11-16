@@ -6,6 +6,8 @@ import { EntityManager } from '@mikro-orm/postgresql';
 import { AccountsService } from 'src/accounts/accounts.service';
 import { LeadsService } from 'src/leads/leads.service';
 import { OpportunitiesService } from 'src/opportunities/opportunities.service';
+import { TaskResponseDto } from './dto/response-task.dto';
+import { MapperUtil } from 'src/common/utils/mapper.util';
 
 @Injectable()
 export class TasksService {
@@ -18,26 +20,26 @@ export class TasksService {
 
   ) { }
 
-  async create(createTaskDto: CreateTaskDto): Promise<Task> {
+  async create(createTaskDto: CreateTaskDto): Promise<TaskResponseDto> {
     const task = new Task();
 
-    if (createTaskDto.accountId) {
-      task.account = await this.accountsService.findOne(createTaskDto.accountId);
-    }
+    const [account, lead, opportunity] = await Promise.all([
+      this.findAccountById(createTaskDto.accountReferenceId),
+      this.findLeadById(createTaskDto.leadReferenceId),
+      this.findOpportunityById(createTaskDto.opportunityReferenceId)
+    ]);
 
-    if (createTaskDto.leadId) {
-      task.lead = await this.leadsService.findOne(createTaskDto.leadId);
-    }
+    task.account = account;
+    task.lead = lead;
+    task.opportunity = opportunity;
 
-    if (createTaskDto.opportunityId) {
-      task.opportunity = await this.opportunityService.findOne(createTaskDto.opportunityId);
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { accountId, leadId, opportunityId, ...dtoWithoutIds } = createTaskDto;
-    this.em.assign(task, dtoWithoutIds);
+    this.em.assign(task, createTaskDto);
     await this.em.persistAndFlush(task);
-    return task;
+
+    const taskResponseDto = MapperUtil.mapToDtoExcludeExtraneousValues(TaskResponseDto, task);
+
+    return taskResponseDto;
+
   }
 
   async findAll(): Promise<Task[]> {
@@ -68,4 +70,20 @@ export class TasksService {
       message: `Task with ID ${id} has been successfully deleted`,
     };
   }
+
+  private async findAccountById(accountId?: number) {
+    if (!accountId) return undefined;
+    return await this.accountsService.findOne(accountId);
+  }
+
+  private async findLeadById(leadId?: number) {
+    if (!leadId) return undefined;
+    return await this.leadsService.findOne(leadId);
+  }
+
+  private async findOpportunityById(opportunityId?: number) {
+    if (!opportunityId) return undefined;
+    return await this.opportunityService.findOne(opportunityId);
+  }
+
 }

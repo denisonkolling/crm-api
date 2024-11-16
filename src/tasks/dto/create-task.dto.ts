@@ -15,12 +15,12 @@ export class CreateTaskDto {
     dueDate!: Date;
 
     @ApiProperty()
-    accountId?: number;
+    accountReferenceId?: number;
 
     @ApiProperty()
-    leadId?: number;
+    leadReferenceId?: number;
 
     @ApiProperty()
-    opportunityId?: number;
+    opportunityReferenceId?: number;
 
 }

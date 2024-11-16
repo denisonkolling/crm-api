@@ -26,6 +26,9 @@ export class Task {
     @Property()
     leadReferenceId?: number;
 
+    @Property()
+    opportunityReferenceId?: number;
+
     @ManyToOne(() => Account, { nullable: true })
     account?: Account;
 
