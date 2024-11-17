@@ -700,7 +700,48 @@
       "get": {
         "operationId": "OpportunitiesController_findAll",
         "summary": "Get all opportunities",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "description": "Page number to retrieve (default is 1)",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "description": "Number of accounts to retrieve per page (default is 10)",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "description": "Field by which to sort the accounts (default is \"id\")",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "description": "Order in which to sort the accounts (default is \"asc\")",
+            "schema": {
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": ""
@@ -711,7 +752,7 @@
         ]
       }
     },
-    "/opportunities/{id}": {
+    "/opportunities/find/{id}": {
       "get": {
         "operationId": "OpportunitiesController_findOne",
         "summary": "Get an opportunity by id",
@@ -733,7 +774,9 @@
         "tags": [
           "opportunities"
         ]
-      },
+      }
+    },
+    "/opportunities/update/{id}": {
       "patch": {
         "operationId": "OpportunitiesController_update",
         "summary": "Update an opportunity by id",
@@ -765,7 +808,9 @@
         "tags": [
           "opportunities"
         ]
-      },
+      }
+    },
+    "/opportunities/remove/{id}": {
       "delete": {
         "operationId": "OpportunitiesController_remove",
         "summary": "Delete an opportunity by id",
@@ -781,6 +826,126 @@
         ],
         "responses": {
           "204": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "opportunities"
+        ]
+      }
+    },
+    "/opportunities/search": {
+      "get": {
+        "operationId": "OpportunitiesController_search",
+        "summary": "Search opportunities with filters",
+        "parameters": [
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "accountId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "stage",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "createdDateStart",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "createdDateEnd",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "opportunityType",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "priority",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "probabilityMin",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "probabilityMax",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
             "description": ""
           }
         },

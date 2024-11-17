@@ -22,9 +22,134 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
+# Enterprise CRM System
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+A robust Customer Relationship Management (CRM) system designed to help businesses manage their sales pipeline, customer interactions, and marketing campaigns effectively.
+
+## 🌟 Features
+
+- **Account Management**
+  - Track company profiles and industry information
+  - Manage business relationships
+  - Website and contact information storage
+
+- **Contact Management**
+  - Store and organize customer contact details
+  - Link contacts to respective accounts
+  - Track communication history
+
+- **Lead Management**
+  - Track potential customers
+  - Associate leads with campaigns
+  - Convert leads into opportunities
+  - Lead status tracking
+
+- **Opportunity Pipeline**
+  - Track sales opportunities
+  - Manage deal stages and probability
+  - Monitor expected close dates
+  - Track competition and priorities
+  - Calculate revenue forecasts
+
+- **Campaign Management**
+  - Create and track marketing campaigns
+  - Set campaign timelines
+  - Monitor campaign effectiveness
+  - Track campaign status
+
+- **Task Management**
+  - Create and assign tasks
+  - Set due dates and priorities
+  - Link tasks to accounts, leads, or opportunities
+  - Track task completion status
+
+- **Event Tracking**
+  - Schedule and manage meetings
+  - Track event locations and times
+  - Associate events with accounts and leads
+
+- **Tag System**
+  - Flexible tagging system for all entities
+  - Custom color coding
+  - Improved organization and filtering
+
+## 💾 Database Schema
+
+### Core Tables
+
+- `tab_accounts` - Company/Organization information
+- `tab_contacts` - Individual contact details
+- `tab_leads` - Potential customer tracking
+- `tab_opportunities` - Sales opportunity pipeline
+- `tab_campaigns` - Marketing campaign management
+- `tab_tasks` - Task management system
+- `tab_events` - Event and meeting tracking
+- `tab_users` - System user management
+- `tab_tags` - Tagging system
+- `tab_taggables` - Tag relationships
+
+## 🔧 Technical Details
+
+### Technology Stack
+
+- PostgreSQL Database
+- MikroORM for database migrations
+- RESTful API architecture
+
+### Key Database Features
+
+- Soft delete support across entities
+- Referential integrity with foreign key constraints
+- Timestamp tracking for critical operations
+- Flexible tagging system for all entities
+
+## 🔒 Security Features
+
+- User authentication and authorization
+- Password encryption
+- Secure user sessions
+- Role-based access control
+
+## 📊 Business Intelligence
+
+The system supports various business analytics through:
+- Sales pipeline tracking
+- Campaign performance metrics
+- Lead conversion analysis
+- Activity tracking
+- Revenue forecasting
+
+## 🚀 Getting Started
+
+1. Clone the repository
+2. Set up PostgreSQL database
+3. Run database migrations
+4. Configure environment variables
+5. Install dependencies
+6. Start the application
+
+## 📝 Database Configuration
+
+```sql
+# Example database configuration
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=crm_database
+DB_USER=your_username
+DB_PASSWORD=your_password
+```
+
+## 🤝 Contributing
+
+We welcome contributions! Please read our contributing guidelines before submitting pull requests.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 📞 Support
+
+For support questions, please create an issue in the repository or contact our support team.
 
 ## Installation
 
