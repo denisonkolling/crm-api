@@ -5,6 +5,7 @@ import { Opportunity } from './entities/opportunity.entity';
 import { EntityManager } from '@mikro-orm/postgresql';
 import { AccountsService } from '../accounts/accounts.service';
 import { UserService } from '../users/user.service';
+import { SearchOpportunityDto } from './dto/search-opportunity.dto';
 
 @Injectable()
 export class OpportunitiesService {
@@ -34,9 +35,20 @@ export class OpportunitiesService {
     return opportunity;
   }
 
-  async findAll(): Promise<Opportunity[]> {
-    return await this.em.find(Opportunity, {});
+  async findAll({ page, limit, sortBy, sortOrder }: { page: number; limit: number; sortBy: string; sortOrder: 'asc' | 'desc'; }): Promise<{ data: Opportunity[]; total: number; page: number; limit: number }> {
+    // Calcular o offset baseado na página e limite
+    const offset = (page - 1) * limit;
+
+    // Buscar os dados e o total de oportunidades
+    const [data, total] = await this.em.findAndCount(Opportunity, {}, {
+      limit,
+      offset,
+      orderBy: { [sortBy]: sortOrder },
+    });
+
+    return { data, total, page,  limit };
   }
+
 
   async findOne(id: number): Promise<Opportunity> {
     const opportunity = await this.em.findOne(Opportunity, id);
@@ -60,7 +72,98 @@ export class OpportunitiesService {
     }
     opportunity.isDeleted = true;
     await this.em.persistAndFlush(opportunity);
-    
+
     return { message: 'Opportunity successfully deleted' };
+  }
+
+  async search(searchDto: SearchOpportunityDto): Promise<{ data: Opportunity[]; total: number; page: number; limit: number }> {
+    const {
+      page = 1,
+      limit = 10,
+      sortBy = 'id',
+      sortOrder = 'desc',
+      name,
+      accountId,
+      stage,
+      createdDateStart,
+      createdDateEnd,
+      opportunityType,
+      priority,
+      probabilityMin,
+      probabilityMax
+    } = searchDto;
+
+    // Construir query base
+    const queryBuilder = this.em.createQueryBuilder(Opportunity, 'o')
+      .select('*')
+      .where({ isDeleted: false });
+
+    // Adicionar filtros conforme parâmetros fornecidos
+    if (name) {
+      queryBuilder.andWhere({ name: { $like: `%${name}%` } });
+    }
+
+    if (accountId) {
+      queryBuilder.andWhere({ account: accountId });
+    }
+
+    if (stage) {
+      queryBuilder.andWhere({ stage });
+    }
+
+    if (createdDateStart || createdDateEnd) {
+      const dateFilter: any = {};
+      if (createdDateStart) {
+        dateFilter.$gte = new Date(createdDateStart);
+      }
+      if (createdDateEnd) {
+        dateFilter.$lte = new Date(createdDateEnd);
+      }
+      queryBuilder.andWhere({ createdDate: dateFilter });
+    }
+
+    if (opportunityType) {
+      queryBuilder.andWhere({ opportunityType });
+    }
+
+    if (priority) {
+      queryBuilder.andWhere({ priority });
+    }
+
+    if (probabilityMin || probabilityMax) {
+      const probabilityFilter: any = {};
+      if (probabilityMin) {
+        probabilityFilter.$gte = probabilityMin;
+      }
+      if (probabilityMax) {
+        probabilityFilter.$lte = probabilityMax;
+      }
+      queryBuilder.andWhere({ probability: probabilityFilter });
+    }
+
+    // Adicionar relacionamentos
+    queryBuilder
+      .leftJoinAndSelect('o.account', 'account')
+      .leftJoinAndSelect('o.owner', 'owner');
+
+    // Calcular total antes da paginação
+    const total = await queryBuilder.getCount();
+
+    // Adicionar ordenação e paginação
+    const offset = (page - 1) * limit;
+    queryBuilder
+      .orderBy({ [sortBy]: sortOrder })
+      .offset(offset)
+      .limit(limit);
+
+    // Executar query
+    const data = await queryBuilder.getResult();
+
+    return {
+      data,
+      total,
+      page,
+      limit
+    };
   }
 }
