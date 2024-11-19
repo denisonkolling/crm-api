@@ -196,7 +196,7 @@
         ]
       }
     },
-    "/accounts/{id}": {
+    "/accounts/find/{id}": {
       "get": {
         "operationId": "AccountsController_findOne",
         "summary": "Get an account by id",
@@ -218,7 +218,9 @@
         "tags": [
           "accounts"
         ]
-      },
+      }
+    },
+    "/accounts/update/{id}": {
       "patch": {
         "operationId": "AccountsController_update",
         "summary": "Update an account by id",
@@ -250,7 +252,9 @@
         "tags": [
           "accounts"
         ]
-      },
+      }
+    },
+    "/accounts/remove/{id}": {
       "delete": {
         "operationId": "AccountsController_remove",
         "summary": "Delete an account by id",
@@ -259,6 +263,77 @@
             "name": "id",
             "required": true,
             "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "accounts"
+        ]
+      }
+    },
+    "/accounts/search": {
+      "get": {
+        "operationId": "AccountsController_search",
+        "parameters": [
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "industry",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "website",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
             "schema": {
               "type": "string"
             }

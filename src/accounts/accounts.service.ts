@@ -3,6 +3,7 @@ import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { EntityManager } from '@mikro-orm/postgresql';
 import { Account } from './entities/account.entity';
+import { AccountSearchDto } from './dto/search-account.dto';
 
 @Injectable()
 export class AccountsService {
@@ -56,6 +57,56 @@ export class AccountsService {
     return {
       statusCode: 204,
       message: `Account with id ${id} has been successfully deleted.`,
+    };
+  }
+
+  async search(searchParams: AccountSearchDto): Promise<{
+    data: Account[];
+    total: number;
+    page: number;
+    totalPages: number;
+  }> {
+    const {
+      page = 1,
+      limit = 10,
+      sortBy = 'id',
+      sortOrder = 'asc',
+      name,
+      industry,
+      website
+    } = searchParams;
+
+    const offset = (page - 1) * limit;
+
+    // Construir filtros dinamicamente
+    const filters: any = { isDeleted: false };
+
+    if (name) {
+      filters.name = { $ilike: `%${name}%` };
+    }
+    if (industry) {
+      filters.industry = { $ilike: `%${industry}%` };
+    }
+    if (website) {
+      filters.website = { $ilike: `%${website}%` };
+    }
+
+    // Executar a query com os filtros
+    const [accounts, total] = await Promise.all([
+      this.em.find(Account, filters, {
+        limit,
+        offset,
+        orderBy: { [sortBy]: sortOrder },
+        populate: ['contacts', 'user'] // Opcional: popula relacionamentos
+      }),
+      this.em.count(Account, filters)
+    ]);
+
+    return {
+      data: accounts,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit)
     };
   }
 }

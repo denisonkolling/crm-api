@@ -3,6 +3,7 @@ import { AccountsService } from './accounts.service';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { AccountSearchDto } from './dto/search-account.dto';
 
 @Controller('accounts')
 @ApiTags('accounts')
@@ -30,21 +31,26 @@ export class AccountsController {
     return this.accountsService.findAll({ page, limit, sortBy, sortOrder });
   }
 
-  @Get(':id')
+  @Get('find/:id')
   @ApiOperation({ summary: 'Get an account by id' })
   findOne(@Param('id') id: string) {
     return this.accountsService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Patch('update/:id')
   @ApiOperation({ summary: 'Update an account by id' })
   update(@Param('id') id: string, @Body() updateAccountDto: UpdateAccountDto) {
     return this.accountsService.update(+id, updateAccountDto);
   }
 
-  @Delete(':id')
+  @Delete('remove/:id')
   @ApiOperation({ summary: 'Delete an account by id' })
   remove(@Param('id') id: string) {
     return this.accountsService.remove(+id);
+  }
+
+  @Get('search')
+  async search(@Query() searchParams: AccountSearchDto) {
+    return this.accountsService.search(searchParams);
   }
 }
