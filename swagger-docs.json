@@ -670,7 +670,7 @@
         ]
       }
     },
-    "/campaigns/{id}": {
+    "/campaigns/fins/{id}": {
       "get": {
         "operationId": "CampaignsController_findOne",
         "summary": "Get a campaign by id",
@@ -692,7 +692,9 @@
         "tags": [
           "campaigns"
         ]
-      },
+      }
+    },
+    "/campaigns/update/{id}": {
       "patch": {
         "operationId": "CampaignsController_update",
         "summary": "Update a campaign by id",
@@ -724,7 +726,9 @@
         "tags": [
           "campaigns"
         ]
-      },
+      }
+    },
+    "/campaigns/remove/{id}": {
       "delete": {
         "operationId": "CampaignsController_remove",
         "summary": "Delete a campaign by id",
@@ -733,6 +737,87 @@
             "name": "id",
             "required": true,
             "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "campaigns"
+        ]
+      }
+    },
+    "/campaigns/search": {
+      "get": {
+        "operationId": "CampaignsController_search",
+        "parameters": [
+          {
+            "name": "name",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "startDate",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "endDate",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
             "schema": {
               "type": "string"
             }
