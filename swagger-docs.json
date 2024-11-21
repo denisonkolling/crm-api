@@ -838,7 +838,7 @@
     "/campaigns/search": {
       "get": {
         "operationId": "CampaignsController_search",
-        "summary": "Search campaigns",
+        "summary": "Search campaigns with filters",
         "parameters": [
           {
             "name": "name",
@@ -875,6 +875,14 @@
             }
           },
           {
+            "name": "hasActiveLeads",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "page",
             "required": false,
             "in": "query",
@@ -883,7 +891,7 @@
             }
           },
           {
-            "name": "limit",
+            "name": "pageSize",
             "required": false,
             "in": "query",
             "schema": {

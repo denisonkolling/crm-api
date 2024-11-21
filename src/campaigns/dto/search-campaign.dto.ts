@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsDate, IsNumber, IsIn, Min } from 'class-validator';
+import { IsOptional, IsString, IsDate, IsNumber, IsIn, Min, IsBoolean } from 'class-validator';
 import { Type } from 'class-transformer';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
@@ -28,6 +28,11 @@ export class CampaignSearchParams {
 
     @ApiPropertyOptional()
     @IsOptional()
+    @IsBoolean()
+    hasActiveLeads?: boolean;
+
+    @ApiPropertyOptional()
+    @IsOptional()
     @IsNumber()
     @Min(1)
     page?: number = 1;
@@ -36,7 +41,8 @@ export class CampaignSearchParams {
     @IsOptional()
     @IsNumber()
     @Type(() => Number)
-    limit?: number;
+    @Min(1)
+    pageSize?: number = 10;
 
     @ApiPropertyOptional()
     @IsOptional()

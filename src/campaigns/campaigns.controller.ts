@@ -44,7 +44,7 @@ export class CampaignsController {
   }
 
   @Get('search')
-  @ApiOperation({ summary: 'Search campaigns' })
+  @ApiOperation({ summary: 'Search campaigns with filters' })
   async search(@Query() searchParams: CampaignSearchParams) {
     return this.campaignsService.search(searchParams);
   }
