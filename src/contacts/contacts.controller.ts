@@ -3,6 +3,7 @@ import { ContactsService } from './contacts.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 import { ApiOperation, ApiProperty, ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ContactSearchDto } from './dto/contact-search.dto';
 
 @Controller('contacts')
 @ApiTags('contacts')
@@ -32,24 +33,29 @@ export class ContactsController {
     return this.contactsService.findAll({ page, limit, sortOrder, sortBy, name });
   }
 
-  @Get(':id')
+  @Get('find/:id')
   @ApiOperation({ summary: 'Get a contact by id' })
   @ApiQuery({ name: 'id', required: true, type: Number, description: 'Contact ID' })
   findOne(@Param('id') id: string) {
     return this.contactsService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Patch('update/:id')
   @ApiOperation({ summary: 'Update a contact by id' })
   @ApiProperty({ type: 'number' })
   update(@Param('id') id: string, @Body() updateContactDto: UpdateContactDto) {
     return this.contactsService.update(+id, updateContactDto);
   }
 
-  @Delete(':id')
+  @Delete('remove/:id')
   @ApiOperation({ summary: 'Delete a contact by id' })
   @ApiProperty({ type: 'number' })
   remove(@Param('id') id: string) {
     return this.contactsService.remove(+id);
+  }
+
+  @Get('search')
+  async search(@Query() searchParams: ContactSearchDto) {
+    return this.contactsService.search(searchParams);
   }
 }

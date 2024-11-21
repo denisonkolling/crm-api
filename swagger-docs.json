@@ -437,7 +437,7 @@
         ]
       }
     },
-    "/contacts/{id}": {
+    "/contacts/find/{id}": {
       "get": {
         "operationId": "ContactsController_findOne",
         "summary": "Get a contact by id",
@@ -460,7 +460,9 @@
         "tags": [
           "contacts"
         ]
-      },
+      }
+    },
+    "/contacts/update/{id}": {
       "patch": {
         "operationId": "ContactsController_update",
         "summary": "Update a contact by id",
@@ -492,7 +494,9 @@
         "tags": [
           "contacts"
         ]
-      },
+      }
+    },
+    "/contacts/remove/{id}": {
       "delete": {
         "operationId": "ContactsController_remove",
         "summary": "Delete a contact by id",
@@ -501,6 +505,85 @@
             "name": "id",
             "required": true,
             "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "contacts"
+        ]
+      }
+    },
+    "/contacts/search": {
+      "get": {
+        "operationId": "ContactsController_search",
+        "parameters": [
+          {
+            "name": "firstName",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "lastName",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "phone",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
             "schema": {
               "type": "string"
             }
@@ -755,6 +838,7 @@
     "/campaigns/search": {
       "get": {
         "operationId": "CampaignsController_search",
+        "summary": "Search campaigns",
         "parameters": [
           {
             "name": "name",
