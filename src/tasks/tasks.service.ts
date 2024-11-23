@@ -8,6 +8,8 @@ import { LeadsService } from 'src/leads/leads.service';
 import { OpportunitiesService } from 'src/opportunities/opportunities.service';
 import { TaskResponseDto } from './dto/response-task.dto';
 import { MapperUtil } from 'src/common/utils/mapper.util';
+import { SearchTaskDto } from './dto/search-task.dto';
+import { PaginatedResponse } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class TasksService {
@@ -68,6 +70,64 @@ export class TasksService {
     }
     return {
       message: `Task with ID ${id} has been successfully deleted`,
+    };
+  }
+
+  async search(searchTaskDto: SearchTaskDto): Promise<PaginatedResponse<Task>> {
+    const { sortBy,
+      sortOrder = 'ASC',
+      page = 1,
+      pageSize = 10,
+      ...searchParams } = searchTaskDto;
+
+    const qb = this.em.createQueryBuilder(Task);
+
+    if (searchParams.accountReferenceId) {
+      qb.andWhere({ account: searchParams.accountReferenceId });
+    }
+
+    if (searchParams.leadReferenceId) {
+      qb.andWhere({ lead: searchParams.leadReferenceId });
+    }
+
+    if (searchParams.opportunityReferenceId) {
+      qb.andWhere({ opportunity: searchParams.opportunityReferenceId });
+    }
+
+    if (searchParams.status) {
+      qb.andWhere({ status: searchParams.status });
+    }
+
+    if (searchParams.dueDate) {
+      qb.andWhere({ dueDate: searchParams.dueDate });
+    }
+
+    if (sortBy) {
+      qb.orderBy({ [sortBy]: sortOrder });
+    }
+
+    // Calcular offset baseado na página
+    const offset = (page - 1) * pageSize;
+
+    // Executar query com contagem
+    const [results, total] = await qb
+      .limit(pageSize)
+      .offset(offset)
+      .getResultAndCount();
+
+    // Calcular metadata da paginação
+    const totalPages = Math.ceil(total / pageSize);
+
+    return {
+      data: results,
+      meta: {
+        total,
+        page,
+        pageSize,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPreviousPage: page > 1
+      }
     };
   }
 

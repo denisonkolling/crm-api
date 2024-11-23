@@ -22,7 +22,7 @@ export class CampaignsController {
     return this.campaignsService.findAll();
   }
 
-  @Get('fins/:id')
+  @Get('find/:id')
   @ApiOperation({ summary: 'Get a campaign by id' })
   @ApiProperty({ type: 'number' })
   findOne(@Param('id') id: string) {

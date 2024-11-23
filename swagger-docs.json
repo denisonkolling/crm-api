@@ -753,7 +753,7 @@
         ]
       }
     },
-    "/campaigns/fins/{id}": {
+    "/campaigns/find/{id}": {
       "get": {
         "operationId": "CampaignsController_findOne",
         "summary": "Get a campaign by id",
@@ -1244,7 +1244,7 @@
         ]
       }
     },
-    "/tasks/{id}": {
+    "/tasks/find/{id}": {
       "get": {
         "operationId": "TasksController_findOne",
         "summary": "Get a task by id",
@@ -1266,7 +1266,9 @@
         "tags": [
           "tasks"
         ]
-      },
+      }
+    },
+    "/tasks/update/{id}": {
       "patch": {
         "operationId": "TasksController_update",
         "summary": "Update a task by id",
@@ -1298,7 +1300,9 @@
         "tags": [
           "tasks"
         ]
-      },
+      }
+    },
+    "/tasks/remove/{id}": {
       "delete": {
         "operationId": "TasksController_remove",
         "summary": "Delete a task by id",
@@ -1307,6 +1311,111 @@
             "name": "id",
             "required": true,
             "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "tasks"
+        ]
+      }
+    },
+    "/tasks/search": {
+      "get": {
+        "operationId": "TasksController_search",
+        "summary": "Search tasks with filters",
+        "parameters": [
+          {
+            "name": "title",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "description",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dueDate",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "name": "accountReferenceId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "leadReferenceId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "opportunityReferenceId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
             "schema": {
               "type": "string"
             }
