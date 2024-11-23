@@ -1,23 +1,36 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Lead } from "src/leads/entities/lead.entity";
+import { Type } from "class-transformer";
+import { IsArray, IsDate, IsInt, IsOptional, IsString } from "class-validator";
 
 export class CreateCampaignDto {
 
     @ApiProperty()
-    name: string;
+    @IsString()
+    name!: string;
 
     @ApiProperty()
-    description: string;
+    @IsString()
+    description!: string;
 
     @ApiProperty()
-    status: string; // e.g., Planned, Active, Completed, Archived
+    @IsString()
+    status!: string; // e.g., Planned, Active, Completed, Archived
 
-    @ApiProperty()
-    startDate: Date;
+    @ApiProperty({ type: Date })
+    @IsOptional()
+    @IsDate()
+    @Type(() => Date)
+    startDate?: Date;
 
-    @ApiProperty()
-    endDate: Date;
+    @ApiProperty({ type: Date })
+    @IsOptional()
+    @IsDate()
+    @Type(() => Date)
+    endDate?: Date;
 
-    @ApiProperty()
-    leads: Lead[];
+    @ApiProperty({ type: [Number] })
+    @IsOptional()
+    @IsArray()
+    @IsInt({ each: true })
+    leadsReferenceId?: number[];
 }

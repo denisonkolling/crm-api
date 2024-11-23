@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CampaignsService } from './campaigns.service';
 import { CreateCampaignDto } from './dto/create-campaign.dto';
 import { UpdateCampaignDto } from './dto/update-campaign.dto';
 import { ApiOperation, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { CampaignSearchParams } from './dto/search-campaign.dto';
+import { CampaignResponseDto } from './dto/response-campaign.dto';
 
 @Controller('campaigns')
 @ApiTags('campaigns')
@@ -12,7 +13,8 @@ export class CampaignsController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new campaign' })
-  create(@Body() createCampaignDto: CreateCampaignDto) {
+  @UsePipes(new ValidationPipe({ transform: true }))
+  create(@Body() createCampaignDto: CreateCampaignDto): Promise<CampaignResponseDto> {
     return this.campaignsService.create(createCampaignDto);
   }
 

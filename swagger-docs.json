@@ -1850,10 +1850,10 @@
             "format": "date-time",
             "type": "string"
           },
-          "leads": {
+          "leadsReferenceId": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "number"
             }
           }
         },
@@ -1863,7 +1863,7 @@
           "status",
           "startDate",
           "endDate",
-          "leads"
+          "leadsReferenceId"
         ]
       },
       "UpdateCampaignDto": {

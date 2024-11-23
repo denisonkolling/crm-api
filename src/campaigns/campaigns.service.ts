@@ -6,6 +6,8 @@ import { Campaign } from './entities/campaign.entity';
 import { LeadsService } from 'src/leads/leads.service';
 import { CampaignSearchParams } from './dto/search-campaign.dto';
 import { PaginatedResponse } from 'src/common/dto/pagination.dto';
+import { MapperUtil } from 'src/common/utils/mapper.util';
+import { CampaignResponseDto } from './dto/response-campaign.dto';
 
 @Injectable()
 export class CampaignsService {
@@ -17,18 +19,27 @@ export class CampaignsService {
   ) { }
 
   async create(createCampaignDto: CreateCampaignDto) {
+    console.log('createCampaignDto', createCampaignDto);
     const campaign = new Campaign();
 
-    if (createCampaignDto.leads) {
+    if (createCampaignDto.leadsReferenceId?.length) {
       const leads = await Promise.all(
-        createCampaignDto.leads.map(lead => this.leadsService.findOne(lead.id))
+        createCampaignDto.leadsReferenceId.map(lead => this.leadsService.findOne(lead))
       );
-      campaign.leads.add(...(leads as [typeof leads[0]]));
+      campaign.leads.set(leads);
     }
 
-    this.em.assign(campaign, createCampaignDto);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { leadsReferenceId, ...campaignData } = createCampaignDto;
+    this.em.assign(campaign, campaignData);
     await this.em.persistAndFlush(campaign);
-    return campaign;
+
+    // Garantir que os leads estão carregados antes de mapear
+    await campaign.leads.init();
+
+    const campaignResponseDto = MapperUtil.mapToDtoExcludeExtraneousValues(CampaignResponseDto, campaign);
+
+    return campaignResponseDto;
   }
 
   async findAll() {
