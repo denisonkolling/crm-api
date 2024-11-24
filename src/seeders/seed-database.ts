@@ -8,6 +8,7 @@ import { Campaign } from '../campaigns/entities/campaign.entity';
 import { Opportunity } from '../opportunities/entities/opportunity.entity';
 import { Task } from '../tasks/entities/task.entity';
 import { Event } from '../events/entities/event.entity';
+import { CampaignStatus } from 'src/campaigns/enums/campaign-status.enum';
 
 export class DatabaseSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
@@ -37,7 +38,7 @@ export class DatabaseSeeder extends Seeder {
       const campaign = new Campaign();
       campaign.name = faker.company.catchPhrase();
       campaign.description = faker.lorem.sentence();
-      campaign.status = faker.helpers.arrayElement(campaignStatuses);
+      campaign.status = faker.helpers.arrayElement(campaignStatuses) as CampaignStatus;;
       campaign.startDate = faker.date.between({ from: new Date('2020-01-01'), to: new Date('2023-12-31') });
       campaign.endDate = faker.date.between({ from: campaign.startDate, to: new Date('2024-12-31') });
       em.persist(campaign);

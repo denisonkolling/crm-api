@@ -1,5 +1,7 @@
 import { Entity, PrimaryKey, Property, OneToMany, Collection } from '@mikro-orm/core';
 import { Lead } from '../../leads/entities/lead.entity';
+import { IsEnum } from 'class-validator';
+import { CampaignStatus } from '../enums/campaign-status.enum';
 
 @Entity({ tableName: 'tab_campaigns' })
 export class Campaign {
@@ -13,7 +15,8 @@ export class Campaign {
     description!: string;
 
     @Property()
-    status!: string; // e.g., Planned, Active, Completed, Archived
+    @IsEnum(CampaignStatus, { message: 'Planned, Active, Completed, Archived, Draft, Cancelled, Paused, Expired, Failed, Under Review, Suspended, Testing' })
+    status!: CampaignStatus;
 
     @Property()
     startDate!: Date;

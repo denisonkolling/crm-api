@@ -1840,7 +1840,21 @@
             "type": "string"
           },
           "status": {
-            "type": "string"
+            "type": "string",
+            "enum": [
+              "Planned",
+              "Active",
+              "Completed",
+              "Archived",
+              "Draft",
+              "Cancelled",
+              "Paused",
+              "Expired",
+              "Failed",
+              "Under Review",
+              "Suspended",
+              "Testing"
+            ]
           },
           "startDate": {
             "format": "date-time",

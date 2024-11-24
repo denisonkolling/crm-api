@@ -19,7 +19,6 @@ export class CampaignsService {
   ) { }
 
   async create(createCampaignDto: CreateCampaignDto) {
-    console.log('createCampaignDto', createCampaignDto);
     const campaign = new Campaign();
 
     if (createCampaignDto.leadsReferenceId?.length) {
