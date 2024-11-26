@@ -1,4 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { Account } from "src/accounts/entities/account.entity";
+import { Lead } from "src/leads/entities/lead.entity";
+import { Opportunity } from "src/opportunities/entities/opportunity.entity";
 
 export class CreateTaskDto {
 
@@ -15,12 +18,12 @@ export class CreateTaskDto {
     dueDate!: Date;
 
     @ApiProperty()
-    accountReferenceId?: number;
+    account?: Account
 
     @ApiProperty()
-    leadReferenceId?: number;
+    lead?: Lead;
 
     @ApiProperty()
-    opportunityReferenceId?: number;
+    opportunity?: Opportunity;
 
 }

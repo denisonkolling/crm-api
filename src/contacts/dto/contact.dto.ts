@@ -1,7 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { AccountDto } from "src/accounts/dto/account.dto";
 
-export class CreateUserDto {
+export class ContactDto {
+    @ApiProperty()
+    id: number;
 
     @ApiProperty()
     firstName: string;
@@ -13,12 +15,11 @@ export class CreateUserDto {
     email: string;
 
     @ApiProperty()
-    password: string;
-
-    @ApiProperty()
     phone: string;
 
     @ApiProperty()
     account: AccountDto;
 
+    @ApiProperty()
+    isDeleted: boolean;
 }

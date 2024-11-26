@@ -1699,6 +1699,10 @@
       }
     },
     "schemas": {
+      "Account": {
+        "type": "object",
+        "properties": {}
+      },
       "CreateUserDto": {
         "type": "object",
         "properties": {
@@ -1717,8 +1721,8 @@
           "phone": {
             "type": "string"
           },
-          "accountId": {
-            "type": "number"
+          "account": {
+            "$ref": "#/components/schemas/Account"
           }
         },
         "required": [
@@ -1727,7 +1731,7 @@
           "email",
           "password",
           "phone",
-          "accountId"
+          "account"
         ]
       },
       "UpdateUserDto": {
@@ -1761,10 +1765,6 @@
         ]
       },
       "UpdateAccountDto": {
-        "type": "object",
-        "properties": {}
-      },
-      "Account": {
         "type": "object",
         "properties": {}
       },
@@ -1962,6 +1962,14 @@
         "type": "object",
         "properties": {}
       },
+      "Lead": {
+        "type": "object",
+        "properties": {}
+      },
+      "Opportunity": {
+        "type": "object",
+        "properties": {}
+      },
       "CreateTaskDto": {
         "type": "object",
         "properties": {
@@ -1978,14 +1986,14 @@
             "format": "date-time",
             "type": "string"
           },
-          "accountReferenceId": {
-            "type": "number"
+          "account": {
+            "$ref": "#/components/schemas/Account"
           },
-          "leadReferenceId": {
-            "type": "number"
+          "lead": {
+            "$ref": "#/components/schemas/Lead"
           },
-          "opportunityReferenceId": {
-            "type": "number"
+          "opportunity": {
+            "$ref": "#/components/schemas/Opportunity"
           }
         },
         "required": [
@@ -1993,9 +2001,9 @@
           "description",
           "status",
           "dueDate",
-          "accountReferenceId",
-          "leadReferenceId",
-          "opportunityReferenceId"
+          "account",
+          "lead",
+          "opportunity"
         ]
       },
       "UpdateTaskDto": {
