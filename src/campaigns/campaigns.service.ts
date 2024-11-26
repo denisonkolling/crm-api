@@ -18,27 +18,26 @@ export class CampaignsService {
     private readonly leadsService: LeadsService,
   ) { }
 
-  async create(createCampaignDto: CreateCampaignDto) {
+  async create(createDto: CreateCampaignDto) {
+    const { leadsReferenceId, ...campaignData } = createDto;
     const campaign = new Campaign();
 
-    if (createCampaignDto.leadsReferenceId?.length) {
+    if (leadsReferenceId?.length) {
       const leads = await Promise.all(
-        createCampaignDto.leadsReferenceId.map(lead => this.leadsService.findOne(lead))
+        leadsReferenceId.map(lead => this.leadsService.findOne(lead))
       );
       campaign.leads.set(leads);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { leadsReferenceId, ...campaignData } = createCampaignDto;
     this.em.assign(campaign, campaignData);
+
     await this.em.persistAndFlush(campaign);
 
-    // Garantir que os leads estão carregados antes de mapear
     await campaign.leads.init();
 
-    const campaignResponseDto = MapperUtil.mapToDtoExcludeExtraneousValues(CampaignResponseDto, campaign);
+    const responseDto = MapperUtil.mapToDtoExcludeExtraneousValues(CampaignResponseDto, campaign);
 
-    return campaignResponseDto;
+    return responseDto;
   }
 
   async findAll() {

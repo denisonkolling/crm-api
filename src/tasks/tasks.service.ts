@@ -22,25 +22,26 @@ export class TasksService {
 
   ) { }
 
-  async create(createTaskDto: CreateTaskDto): Promise<TaskResponseDto> {
+  async create(createDto: CreateTaskDto): Promise<TaskResponseDto> {
     const task = new Task();
 
     const [account, lead, opportunity] = await Promise.all([
-      this.findAccountById(createTaskDto.accountReferenceId),
-      this.findLeadById(createTaskDto.leadReferenceId),
-      this.findOpportunityById(createTaskDto.opportunityReferenceId)
+      this.findAccountById(createDto.account.id),
+      this.findLeadById(createDto.lead.id),
+      this.findOpportunityById(createDto.opportunity.id)
     ]);
 
     task.account = account;
     task.lead = lead;
     task.opportunity = opportunity;
 
-    this.em.assign(task, createTaskDto);
+    this.em.assign(task, createDto);
+
     await this.em.persistAndFlush(task);
 
-    const taskResponseDto = MapperUtil.mapToDtoExcludeExtraneousValues(TaskResponseDto, task);
+    const responseDto = MapperUtil.mapToDtoExcludeExtraneousValues(TaskResponseDto, task);
 
-    return taskResponseDto;
+    return responseDto;
 
   }
 

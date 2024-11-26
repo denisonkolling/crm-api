@@ -25,9 +25,6 @@ export class User {
     // ❓⚠️ This is a one-to-many relationship. A user can have many accounts?
     // ------------------------------------------------------------------------
 
-    @Property({ nullable: true })
-    accountId: number;
-
     @OneToMany(() => Account, account => account.user)
     account?: Account;
 

@@ -17,15 +17,12 @@ export class UserService {
   async create(createUserDto: CreateUserDto): Promise<User> {
     const user = new User();
 
-    if (createUserDto.accountId) {
-      user.account = await this.accountsService.findOne(createUserDto.accountId);
+    if (createUserDto.account.id) {
+      user.account = await this.accountsService.findOne(createUserDto.account.id);
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { accountId, ...dtoWithoutIds } = createUserDto;
-
-    this.em.assign(user, dtoWithoutIds);
     await this.em.persistAndFlush(user);
+
     return user;
   }
 
