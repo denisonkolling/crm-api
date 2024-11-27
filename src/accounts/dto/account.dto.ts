@@ -1,4 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { ContactDto } from "src/contacts/dto/contact.dto";
 
 export class AccountDto {
     @ApiProperty()
@@ -14,5 +15,8 @@ export class AccountDto {
     website: string;
 
     @ApiProperty()
-    contacts: number[];
+    contacts: ContactDto[];
+
+    @ApiProperty()
+    isDeleted: boolean;
 }

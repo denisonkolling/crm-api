@@ -1699,9 +1699,39 @@
       }
     },
     "schemas": {
-      "Account": {
+      "AccountDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "industry": {
+            "type": "string"
+          },
+          "website": {
+            "type": "string"
+          },
+          "contacts": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "isDeleted": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "industry",
+          "website",
+          "contacts",
+          "isDeleted"
+        ]
       },
       "CreateUserDto": {
         "type": "object",
@@ -1722,7 +1752,7 @@
             "type": "string"
           },
           "account": {
-            "$ref": "#/components/schemas/Account"
+            "$ref": "#/components/schemas/AccountDto"
           }
         },
         "required": [
@@ -1765,6 +1795,10 @@
         ]
       },
       "UpdateAccountDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "Account": {
         "type": "object",
         "properties": {}
       },

@@ -1,24 +1,41 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { EntityManager } from '@mikro-orm/postgresql';
 import { Account } from './entities/account.entity';
 import { AccountSearchDto } from './dto/search-account.dto';
+import { ContactsService } from 'src/contacts/contacts.service';
 
 @Injectable()
 export class AccountsService {
 
   constructor(
     private readonly em: EntityManager,
+    private readonly contactsService: ContactsService
   ) { }
 
   async create(createAccountDto: CreateAccountDto): Promise<Account> {
+    const { contacts, ...accountData } = createAccountDto;
     const account = new Account();
-    this.em.assign(account, createAccountDto);
+
+    if (contacts && contacts.length > 0) {
+      for (const { id } of contacts) {
+
+        const existingContact = await this.contactsService.findOne(id);
+        if (!existingContact) {
+          throw new BadRequestException(`Contato com ID ${id} não encontrado.`);
+        }
+
+        account.contacts.add(existingContact);
+      }
+    }
+
+    this.em.assign(account, accountData);
+
     await this.em.persistAndFlush(account);
+    //TODO - Implemetar AccountResponseDto
     return account;
   }
-
 
   async findAll({ page, limit, sortBy, sortOrder }: { page: number; limit: number; sortBy: string; sortOrder: 'asc' | 'desc' }): Promise<Account[]> {
     const offset = (page - 1) * limit;
