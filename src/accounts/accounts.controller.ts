@@ -4,6 +4,7 @@ import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AccountSearchDto } from './dto/search-account.dto';
+import { AccountResponseDto } from './dto/response-account.dto';
 
 @Controller('accounts')
 @ApiTags('accounts')
@@ -12,7 +13,7 @@ export class AccountsController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new account' })
-  create(@Body() createAccountDto: CreateAccountDto) {
+  create(@Body() createAccountDto: CreateAccountDto): Promise<AccountResponseDto> {
     return this.accountsService.create(createAccountDto);
   }
 

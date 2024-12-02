@@ -1,10 +1,12 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { EntityManager } from '@mikro-orm/postgresql';
 import { Account } from './entities/account.entity';
 import { AccountSearchDto } from './dto/search-account.dto';
 import { ContactsService } from 'src/contacts/contacts.service';
+import { plainToInstance } from 'class-transformer';
+import { AccountResponseDto } from './dto/response-account.dto';
 
 @Injectable()
 export class AccountsService {
@@ -14,27 +16,23 @@ export class AccountsService {
     private readonly contactsService: ContactsService
   ) { }
 
-  async create(createAccountDto: CreateAccountDto): Promise<Account> {
+  async create(createAccountDto: CreateAccountDto): Promise<AccountResponseDto> {
     const { contacts, ...accountData } = createAccountDto;
     const account = new Account();
 
+    this.em.assign(account, accountData);
+
     if (contacts && contacts.length > 0) {
       for (const { id } of contacts) {
-
-        const existingContact = await this.contactsService.findOne(id);
-        if (!existingContact) {
-          throw new BadRequestException(`Contato com ID ${id} não encontrado.`);
-        }
-
-        account.contacts.add(existingContact);
+        const contact = await this.contactsService.findOne(id);
+        account.contacts.add(contact);
       }
     }
 
-    this.em.assign(account, accountData);
-
     await this.em.persistAndFlush(account);
-    //TODO - Implemetar AccountResponseDto
-    return account;
+
+    const accountResponse = plainToInstance(AccountResponseDto, { ...account, contacts: account.contacts.toArray() }, { excludeExtraneousValues: true });
+    return accountResponse;
   }
 
   async findAll({ page, limit, sortBy, sortOrder }: { page: number; limit: number; sortBy: string; sortOrder: 'asc' | 'desc' }): Promise<Account[]> {

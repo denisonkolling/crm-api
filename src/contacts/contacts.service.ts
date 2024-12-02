@@ -30,7 +30,13 @@ export class ContactsService {
   }
 
   async findOne(id: number) {
-    return this.em.findOne(Contact, id);
+    const contact = await this.em.findOne(Contact, id);
+
+    if (!contact) {
+      throw new NotFoundException(`Contact with id ${id} not found`);
+    }
+
+    return contact;
   }
 
   async update(id: number, updateContactDto: UpdateContactDto) {
