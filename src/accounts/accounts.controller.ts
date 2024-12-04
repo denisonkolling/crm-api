@@ -5,6 +5,8 @@ import { UpdateAccountDto } from './dto/update-account.dto';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AccountSearchDto } from './dto/search-account.dto';
 import { AccountResponseDto } from './dto/response-account.dto';
+import { plainToInstance } from 'class-transformer';
+import { AccountDto } from './dto/account.dto';
 
 @Controller('accounts')
 @ApiTags('accounts')
@@ -35,7 +37,9 @@ export class AccountsController {
   @Get('find/:id')
   @ApiOperation({ summary: 'Get an account by id' })
   findOne(@Param('id') id: string) {
-    return this.accountsService.findOne(+id);
+    const account = this.accountsService.findOne(+id);
+    //FIXME: Populate contacts in the account
+    return plainToInstance(AccountDto, account, { excludeExtraneousValues: true });
   }
 
   @Patch('update/:id')

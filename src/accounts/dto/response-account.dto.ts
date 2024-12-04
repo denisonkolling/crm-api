@@ -21,7 +21,6 @@ export class AccountResponseDto {
     @Expose()
     website: string;
 
-
     @Expose()
     @Type(() => ContactResponseDto)
     contacts: ContactResponseDto[];
