@@ -25,10 +25,12 @@ export class LeadsService {
 
   async create(createLeadDto: CreateLeadDto) {
     const lead = new Lead();
-    lead.account = await this.findAccountById(createLeadDto.accountReferenceId);
-    lead.campaign = await this.findCampaignById(createLeadDto.campaignReferenceId);
-    lead.contact = await this.findContactById(createLeadDto.contactReferenceId);
-    this.em.assign(lead, createLeadDto);
+    lead.account = await this.findAccountById(createLeadDto.accountId);
+    lead.campaign = await this.findCampaignById(createLeadDto.campaignId);
+    lead.contact = await this.findContactById(createLeadDto.contactId);
+    //eslint-disable-next-line
+    const { contactId, accountId, campaignId, ...leadData } = createLeadDto;
+    this.em.assign(lead, leadData);
     await this.em.persistAndFlush(lead);
     const leadResponse = plainToClass(LeadResponseDto, lead, { excludeExtraneousValues: true, });
     return leadResponse;
@@ -41,7 +43,7 @@ export class LeadsService {
   }
 
   async findOne(id: number) {
-    const lead = await this.em.findOne(Lead, id);
+    const lead = await this.em.findOne(Lead, id, { populate: ['contact', 'account', 'campaign'] });
     if (!lead) {
       throw new NotFoundException(`Lead id: ${id} not found`);
     }
@@ -81,18 +83,18 @@ export class LeadsService {
     return lead;
   }
 
-  private async findAccountById(accountReferenceId?: number): Promise<Account | undefined> {
-    if (!accountReferenceId) return undefined;
-    return await this.accountsService.findOne(accountReferenceId);
+  private async findAccountById(accountId?: number): Promise<Account | undefined> {
+    if (!accountId) return undefined;
+    return await this.accountsService.findOne(accountId);
   }
 
-  private async findCampaignById(campaignReferenceId?: number): Promise<Campaign | undefined> {
-    if (!campaignReferenceId) return undefined;
-    return await this.campaignsService.findOne(campaignReferenceId);
+  private async findCampaignById(campaignId?: number): Promise<Campaign | undefined> {
+    if (!campaignId) return undefined;
+    return await this.campaignsService.findOne(campaignId);
   }
 
-  private async findContactById(contactReferenceId?: number): Promise<Contact | undefined> {
-    if (!contactReferenceId) return undefined;
-    return await this.contactsService.findOne(contactReferenceId);
+  private async findContactById(contactId?: number): Promise<Contact | undefined> {
+    if (!contactId) return undefined;
+    return await this.contactsService.findOne(contactId);
   }
 }

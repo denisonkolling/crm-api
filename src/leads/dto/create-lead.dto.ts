@@ -8,12 +8,15 @@ export class CreateLeadDto {
     status: string; // e.g., New, Contacted, Qualified, etc.
 
     @ApiProperty()
-    contactReferenceId?: number;
+    leadType?: string; // e.g., Customer, Partner, Vendor, etc.
 
     @ApiProperty()
-    accountReferenceId?: number;
+    contactId?: number;
 
     @ApiProperty()
-    campaignReferenceId?: number;
+    accountId?: number;
+
+    @ApiProperty()
+    campaignId?: number;
 
 }

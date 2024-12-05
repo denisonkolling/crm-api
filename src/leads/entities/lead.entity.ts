@@ -17,15 +17,6 @@ export class Lead {
   @Property()
   status!: string; // e.g., New, Contacted, Qualified, etc.
 
-  @Property({ nullable: true })
-  contactReferenceId?: number;
-
-  @Property({ nullable: true })
-  accountReferenceId?: number;
-
-  @Property({ nullable: true })
-  campaignReferenceId?: number;
-
   @ManyToOne(() => Contact, { nullable: true })
   contact?: Contact;
 

@@ -647,7 +647,7 @@
             "required": true,
             "in": "path",
             "schema": {
-              "type": "string"
+              "type": "number"
             }
           }
         ],
@@ -669,7 +669,7 @@
             "required": true,
             "in": "path",
             "schema": {
-              "type": "string"
+              "type": "number"
             }
           }
         ],
@@ -701,7 +701,7 @@
             "required": true,
             "in": "path",
             "schema": {
-              "type": "string"
+              "type": "number"
             }
           }
         ],
@@ -1842,22 +1842,26 @@
           "status": {
             "type": "string"
           },
-          "contactReferenceId": {
+          "leadType": {
+            "type": "string"
+          },
+          "contactId": {
             "type": "number"
           },
-          "accountReferenceId": {
+          "accountId": {
             "type": "number"
           },
-          "campaignReferenceId": {
+          "campaignId": {
             "type": "number"
           }
         },
         "required": [
           "name",
           "status",
-          "contactReferenceId",
-          "accountReferenceId",
-          "campaignReferenceId"
+          "leadType",
+          "contactId",
+          "accountId",
+          "campaignId"
         ]
       },
       "UpdateLeadDto": {
