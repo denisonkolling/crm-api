@@ -6,8 +6,8 @@ import { Campaign } from './entities/campaign.entity';
 import { LeadsService } from 'src/leads/leads.service';
 import { CampaignSearchParams } from './dto/search-campaign.dto';
 import { PaginatedResponse } from 'src/common/dto/pagination.dto';
-import { MapperUtil } from 'src/common/utils/mapper.util';
 import { CampaignResponseDto } from './dto/response-campaign.dto';
+import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class CampaignsService {
@@ -19,25 +19,22 @@ export class CampaignsService {
   ) { }
 
   async create(createDto: CreateCampaignDto) {
-    const { leadsReferenceId, ...campaignData } = createDto;
+    const { leads, ...campaignData } = createDto;
     const campaign = new Campaign();
-
-    if (leadsReferenceId?.length) {
-      const leads = await Promise.all(
-        leadsReferenceId.map(lead => this.leadsService.findOne(lead))
-      );
-      campaign.leads.set(leads);
-    }
 
     this.em.assign(campaign, campaignData);
 
+    if (leads && leads.length > 0) {
+      const foundLeads = await Promise.all(
+        leads.map(lead => this.leadsService.findOne(lead.id))
+      );
+      campaign.leads.set(foundLeads);
+    }
+
     await this.em.persistAndFlush(campaign);
 
-    await campaign.leads.init();
-
-    const responseDto = MapperUtil.mapToDtoExcludeExtraneousValues(CampaignResponseDto, campaign);
-
-    return responseDto;
+    const campaignResponse = plainToInstance(CampaignResponseDto, { ...campaign, leads: campaign.leads.toArray() }, { excludeExtraneousValues: true });
+    return campaignResponse;
   }
 
   async findAll() {

@@ -1,7 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsArray, IsDate, IsEnum, IsInt, IsOptional, IsString } from "class-validator";
+import { IsArray, IsDate, IsEnum, IsOptional, IsString } from "class-validator";
 import { CampaignStatus } from "../enums/campaign-status.enum";
+import { LeadDto } from "src/leads/dto/lead.dto";
 
 export class CreateCampaignDto {
 
@@ -32,6 +33,6 @@ export class CreateCampaignDto {
     @ApiProperty({ type: [Number] })
     @IsOptional()
     @IsArray()
-    @IsInt({ each: true })
-    leadsReferenceId?: number[];
+    @Type(() => LeadDto)
+    leads?: LeadDto[];
 }

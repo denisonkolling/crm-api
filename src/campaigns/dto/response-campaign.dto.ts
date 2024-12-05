@@ -1,4 +1,6 @@
-import { Expose, Transform } from "class-transformer";
+import { Expose, Type } from "class-transformer";
+import { LeadResponseDto } from "src/leads/dto/response-lead.dto";
+
 
 export class CampaignResponseDto {
     @Expose()
@@ -20,11 +22,6 @@ export class CampaignResponseDto {
     endDate: Date;
 
     @Expose()
-    @Transform(({ obj }) => {
-        // Assume que obj.leads é uma Collection do MikroORM
-        return obj.leads?.isInitialized()
-            ? Array.from(obj.leads).map((lead: { id: number }) => lead.id)
-            : [];
-    })
-    leadsReferenceId: number[];
+    @Type(() => LeadResponseDto)
+    leads: LeadResponseDto[];
 }

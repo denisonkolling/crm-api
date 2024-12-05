@@ -29,15 +29,6 @@ export class LeadResponseDto {
   status: string;
 
   @Expose()
-  contactReferenceId?: number;
-
-  @Expose()
-  accountReferenceId?: number;
-
-  @Expose()
-  campaignReferenceId?: number;
-
-  @Expose()
   isDeleted: boolean;
 
   @Expose()

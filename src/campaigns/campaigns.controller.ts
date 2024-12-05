@@ -5,6 +5,7 @@ import { UpdateCampaignDto } from './dto/update-campaign.dto';
 import { ApiOperation, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { CampaignSearchParams } from './dto/search-campaign.dto';
 import { CampaignResponseDto } from './dto/response-campaign.dto';
+import { plainToInstance } from 'class-transformer';
 
 @Controller('campaigns')
 @ApiTags('campaigns')
@@ -27,21 +28,22 @@ export class CampaignsController {
   @Get('find/:id')
   @ApiOperation({ summary: 'Get a campaign by id' })
   @ApiProperty({ type: 'number' })
-  findOne(@Param('id') id: string) {
-    return this.campaignsService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    const campaign = this.campaignsService.findOne(+id);
+    return plainToInstance(CampaignResponseDto, campaign, { excludeExtraneousValues: true });
   }
 
   @Patch('update/:id')
   @ApiOperation({ summary: 'Update a campaign by id' })
   @ApiProperty({ type: 'number' })
-  update(@Param('id') id: string, @Body() updateCampaignDto: UpdateCampaignDto) {
+  update(@Param('id') id: number, @Body() updateCampaignDto: UpdateCampaignDto) {
     return this.campaignsService.update(+id, updateCampaignDto);
   }
 
   @Delete('remove/:id')
   @ApiOperation({ summary: 'Delete a campaign by id' })
   @ApiProperty({ type: 'number' })
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.campaignsService.remove(+id);
   }
 
