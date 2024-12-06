@@ -1798,10 +1798,6 @@
         "type": "object",
         "properties": {}
       },
-      "Account": {
-        "type": "object",
-        "properties": {}
-      },
       "CreateContactDto": {
         "type": "object",
         "properties": {
@@ -1817,8 +1813,8 @@
           "phone": {
             "type": "string"
           },
-          "account": {
-            "$ref": "#/components/schemas/Account"
+          "accountId": {
+            "type": "number"
           }
         },
         "required": [
@@ -1826,7 +1822,7 @@
           "lastName",
           "email",
           "phone",
-          "account"
+          "accountId"
         ]
       },
       "UpdateContactDto": {
@@ -2000,14 +1996,6 @@
         "type": "object",
         "properties": {}
       },
-      "Lead": {
-        "type": "object",
-        "properties": {}
-      },
-      "Opportunity": {
-        "type": "object",
-        "properties": {}
-      },
       "CreateTaskDto": {
         "type": "object",
         "properties": {
@@ -2024,14 +2012,14 @@
             "format": "date-time",
             "type": "string"
           },
-          "account": {
-            "$ref": "#/components/schemas/Account"
+          "accountId": {
+            "type": "number"
           },
-          "lead": {
-            "$ref": "#/components/schemas/Lead"
+          "leadId": {
+            "type": "number"
           },
-          "opportunity": {
-            "$ref": "#/components/schemas/Opportunity"
+          "opportunityId": {
+            "type": "number"
           }
         },
         "required": [
@@ -2039,9 +2027,9 @@
           "description",
           "status",
           "dueDate",
-          "account",
-          "lead",
-          "opportunity"
+          "accountId",
+          "leadId",
+          "opportunityId"
         ]
       },
       "UpdateTaskDto": {

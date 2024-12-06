@@ -6,8 +6,6 @@ import { Campaign } from './entities/campaign.entity';
 import { LeadsService } from 'src/leads/leads.service';
 import { CampaignSearchParams } from './dto/search-campaign.dto';
 import { PaginatedResponse } from 'src/common/dto/pagination.dto';
-import { CampaignResponseDto } from './dto/response-campaign.dto';
-import { plainToInstance } from 'class-transformer';
 
 @Injectable()
 export class CampaignsService {
@@ -26,15 +24,14 @@ export class CampaignsService {
 
     if (leads && leads.length > 0) {
       const foundLeads = await Promise.all(
-        leads.map(lead => this.leadsService.findOne(lead.id))
+        leads.map(lead => this.leadsService.findOne(lead))
       );
       campaign.leads.set(foundLeads);
     }
 
     await this.em.persistAndFlush(campaign);
 
-    const campaignResponse = plainToInstance(CampaignResponseDto, { ...campaign, leads: campaign.leads.toArray() }, { excludeExtraneousValues: true });
-    return campaignResponse;
+    return campaign;
   }
 
   async findAll() {
