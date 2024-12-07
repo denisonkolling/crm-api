@@ -5,8 +5,7 @@ import { EntityManager } from '@mikro-orm/postgresql';
 import { Account } from './entities/account.entity';
 import { AccountSearchDto } from './dto/search-account.dto';
 import { ContactsService } from 'src/contacts/contacts.service';
-import { plainToInstance } from 'class-transformer';
-import { AccountResponseDto } from './dto/response-account.dto';
+import { Contact } from 'src/contacts/entities/contact.entity';
 
 @Injectable()
 export class AccountsService {
@@ -16,23 +15,22 @@ export class AccountsService {
     private readonly contactsService: ContactsService
   ) { }
 
-  async create(createAccountDto: CreateAccountDto): Promise<AccountResponseDto> {
+  async create(createAccountDto: CreateAccountDto): Promise<Account> {
     const { contacts, ...accountData } = createAccountDto;
     const account = new Account();
 
     this.em.assign(account, accountData);
 
     if (contacts && contacts.length > 0) {
-      for (const { id } of contacts) {
-        const contact = await this.contactsService.findOne(id);
-        account.contacts.add(contact);
-      }
+      const foundContacts = await Promise.all(
+        contacts.map(contact => this.contactsService.findOne(contact))
+      );
+      account.contacts.set(foundContacts);
     }
 
     await this.em.persistAndFlush(account);
 
-    const accountResponse = plainToInstance(AccountResponseDto, { ...account, contacts: account.contacts.toArray() }, { excludeExtraneousValues: true });
-    return accountResponse;
+    return account;
   }
 
   async findAll({ page, limit, sortBy, sortOrder }: { page: number; limit: number; sortBy: string; sortOrder: 'asc' | 'desc' }): Promise<Account[]> {
@@ -54,8 +52,23 @@ export class AccountsService {
 
   async update(id: number, updateAccountDto: UpdateAccountDto) {
     const account = await this.em.findOne(Account, { id });
-    this.em.assign(account, updateAccountDto);
+
+    const { contacts, ...accountData } = updateAccountDto;
+
+    if (contacts && contacts.length > 0) {
+      const foundContacts = await Promise.all(
+        contacts.map(async contactId => {
+          const contact = await this.contactsService.findOne(contactId);
+          return contact;
+        }),
+      );
+      account.contacts.set(foundContacts);
+    }
+
+    this.em.assign(account, accountData);
+
     await this.em.persistAndFlush(account);
+
     return account;
   }
 
@@ -123,5 +136,11 @@ export class AccountsService {
       page,
       totalPages: Math.ceil(total / limit)
     };
+  }
+
+  //TODO: Implementar findContactsByAccountId nos métodos create account e update account
+  private async findContactById(contactId?: number): Promise<Contact | undefined> {
+    if (!contactId) return undefined;
+    return await this.contactsService.findOne(contactId);
   }
 }

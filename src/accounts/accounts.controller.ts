@@ -4,9 +4,8 @@ import { CreateAccountDto } from './dto/create-account.dto';
 import { UpdateAccountDto } from './dto/update-account.dto';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { AccountSearchDto } from './dto/search-account.dto';
-import { AccountResponseDto } from './dto/response-account.dto';
-import { plainToInstance } from 'class-transformer';
 import { AccountDto } from './dto/account.dto';
+import { MapperUtil } from 'src/common/utils/mapper.util';
 
 @Controller('accounts')
 @ApiTags('accounts')
@@ -15,8 +14,10 @@ export class AccountsController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new account' })
-  create(@Body() createAccountDto: CreateAccountDto): Promise<AccountResponseDto> {
-    return this.accountsService.create(createAccountDto);
+  async create(@Body() createAccountDto: CreateAccountDto): Promise<AccountDto> {
+    const account = await this.accountsService.create(createAccountDto);
+    const dto = MapperUtil.mapToDto(AccountDto, account);
+    return dto;
   }
 
   @Get()
@@ -36,21 +37,23 @@ export class AccountsController {
 
   @Get('find/:id')
   @ApiOperation({ summary: 'Get an account by id' })
-  findOne(@Param('id') id: string) {
-    const account = this.accountsService.findOne(+id);
-    //FIXME: Populate contacts in the account
-    return plainToInstance(AccountDto, account, { excludeExtraneousValues: true });
+  async findOne(@Param('id') id: number) {
+    const account = await this.accountsService.findOne(+id);
+    const dto = MapperUtil.mapToDto(AccountDto, account);
+    return dto;
   }
 
   @Patch('update/:id')
   @ApiOperation({ summary: 'Update an account by id' })
-  update(@Param('id') id: string, @Body() updateAccountDto: UpdateAccountDto) {
-    return this.accountsService.update(+id, updateAccountDto);
+  async update(@Param('id') id: number, @Body() updateAccountDto: UpdateAccountDto) {
+    const account = await this.accountsService.update(+id, updateAccountDto);
+    const dto = MapperUtil.mapToDto(AccountDto, account);
+    return dto;
   }
 
   @Delete('remove/:id')
   @ApiOperation({ summary: 'Delete an account by id' })
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.accountsService.remove(+id);
   }
 
