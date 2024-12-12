@@ -4,6 +4,8 @@ import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 import { ApiOperation, ApiProperty, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ContactSearchDto } from './dto/contact-search.dto';
+import { plainToClass } from 'class-transformer';
+import { ContactDto } from './dto/contact.dto';
 
 @Controller('contacts')
 @ApiTags('contacts')
@@ -12,8 +14,10 @@ export class ContactsController {
 
   @Post()
   @ApiOperation({ summary: 'Create a new contact' })
-  create(@Body() createContactDto: CreateContactDto) {
-    return this.contactsService.create(createContactDto);
+  create(@Body() createContactDto: CreateContactDto): ContactDto {
+    const contact = this.contactsService.create(createContactDto);
+    const contactDto = plainToClass(ContactDto, contact, { excludeExtraneousValues: true });
+    return contactDto;
   }
 
   @Get()
@@ -37,14 +41,16 @@ export class ContactsController {
   @ApiOperation({ summary: 'Get a contact by id' })
   @ApiQuery({ name: 'id', required: true, type: Number, description: 'Contact ID' })
   findOne(@Param('id') id: string) {
-    return this.contactsService.findOne(+id);
+    const contact = this.contactsService.findOne(+id);
+    return plainToClass(ContactDto, contact, { excludeExtraneousValues: true });
   }
 
   @Patch('update/:id')
   @ApiOperation({ summary: 'Update a contact by id' })
   @ApiProperty({ type: 'number' })
   update(@Param('id') id: string, @Body() updateContactDto: UpdateContactDto) {
-    return this.contactsService.update(+id, updateContactDto);
+    const contact = this.contactsService.update(+id, updateContactDto);
+    return plainToClass(ContactDto, contact, { excludeExtraneousValues: true });
   }
 
   @Delete('remove/:id')

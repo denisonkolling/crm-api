@@ -1,22 +1,36 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 import { Contact } from './entities/contact.entity';
 import { EntityManager } from '@mikro-orm/postgresql';
 import { ContactSearchDto } from './dto/contact-search.dto';
+import { AccountsService } from 'src/accounts/accounts.service';
+import { Account } from 'src/accounts/entities/account.entity';
 
 @Injectable()
 export class ContactsService {
 
   constructor(
     private readonly em: EntityManager,
+    @Inject(forwardRef(() => AccountsService))
+    private readonly accountsService: AccountsService
   ) { }
 
-  async create(createContactDto: CreateContactDto) {
+  async create(createContactDto: CreateContactDto): Promise<Contact> {
     const contact = new Contact();
-    this.em.assign(contact, createContactDto);
+
+    const account = await this.findAccountById(createContactDto.accountId);
+
+    contact.account = account;
+
+    //eslint-disable-next-line
+    const { accountId, ...contactData } = createContactDto;
+
+    this.em.assign(contact, contactData);
+
     await this.em.persistAndFlush(contact);
-    return contact;
+
+    return contact
   }
 
   async findAll({ page, limit, sortBy, sortOrder, name }: { page: number, limit: number, sortBy: string, sortOrder: 'asc' | 'desc', name?: string }): Promise<Contact[]> {
@@ -101,5 +115,10 @@ export class ContactsService {
         totalPages,
       },
     };
+  }
+
+  private async findAccountById(accountId?: number): Promise<Account | undefined> {
+    if (!accountId) return undefined;
+    return await this.accountsService.findOne(accountId);
   }
 }

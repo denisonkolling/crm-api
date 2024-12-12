@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Expose } from "class-transformer";
+import { Expose, Type } from "class-transformer";
 import { AccountDto } from "src/accounts/dto/account.dto";
 
 export class ContactDto {
@@ -25,6 +25,7 @@ export class ContactDto {
 
     @ApiProperty()
     @Expose()
+    @Type(() => AccountDto)
     account: AccountDto;
 
     @ApiProperty()
