@@ -1,5 +1,4 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Account } from "src/accounts/entities/account.entity";
 
 export class CreateContactDto {
 
@@ -16,7 +15,7 @@ export class CreateContactDto {
     phone: string;
 
     @ApiProperty()
-    account?: Account;
+    accountId?: number;
 
 }
 

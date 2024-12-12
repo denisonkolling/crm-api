@@ -4,7 +4,7 @@ import { CreateContactDto } from './dto/create-contact.dto';
 import { UpdateContactDto } from './dto/update-contact.dto';
 import { ApiOperation, ApiProperty, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ContactSearchDto } from './dto/contact-search.dto';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { ContactDto } from './dto/contact.dto';
 
 @Controller('contacts')
@@ -16,8 +16,8 @@ export class ContactsController {
   @ApiOperation({ summary: 'Create a new contact' })
   create(@Body() createContactDto: CreateContactDto): ContactDto {
     const contact = this.contactsService.create(createContactDto);
-    const contactDto = plainToClass(ContactDto, contact, { excludeExtraneousValues: true });
-    return contactDto;
+    const dto = plainToInstance(ContactDto, contact, { excludeExtraneousValues: true });
+    return dto;
   }
 
   @Get()
@@ -39,24 +39,24 @@ export class ContactsController {
 
   @Get('find/:id')
   @ApiOperation({ summary: 'Get a contact by id' })
-  @ApiQuery({ name: 'id', required: true, type: Number, description: 'Contact ID' })
-  findOne(@Param('id') id: string) {
+  @ApiProperty({ type: 'number' })
+  findOne(@Param('id') id: number) {
     const contact = this.contactsService.findOne(+id);
-    return plainToClass(ContactDto, contact, { excludeExtraneousValues: true });
+    return plainToInstance(ContactDto, contact, { excludeExtraneousValues: true });
   }
 
   @Patch('update/:id')
   @ApiOperation({ summary: 'Update a contact by id' })
   @ApiProperty({ type: 'number' })
-  update(@Param('id') id: string, @Body() updateContactDto: UpdateContactDto) {
+  update(@Param('id') id: number, @Body() updateContactDto: UpdateContactDto) {
     const contact = this.contactsService.update(+id, updateContactDto);
-    return plainToClass(ContactDto, contact, { excludeExtraneousValues: true });
+    return plainToInstance(ContactDto, contact, { excludeExtraneousValues: true });
   }
 
   @Delete('remove/:id')
   @ApiOperation({ summary: 'Delete a contact by id' })
   @ApiProperty({ type: 'number' })
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.contactsService.remove(+id);
   }
 
