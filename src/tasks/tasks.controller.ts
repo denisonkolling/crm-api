@@ -3,8 +3,9 @@ import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { TaskResponseDto } from './dto/response-task.dto';
 import { SearchTaskDto } from './dto/search-task.dto';
+import { plainToClass } from 'class-transformer';
+import { TaskDto } from './dto/task.dto';
 
 @Controller('tasks')
 @ApiTags('tasks')
@@ -14,8 +15,10 @@ export class TasksController {
   @Post()
   @ApiOperation({ summary: 'Create a new task' })
   @UsePipes(new ValidationPipe({ transform: true }))
-  create(@Body() createTaskDto: CreateTaskDto): Promise<TaskResponseDto> {
-    return this.tasksService.create(createTaskDto);
+  create(@Body() createTaskDto: CreateTaskDto): TaskDto {
+    const task = this.tasksService.create(createTaskDto);
+    const taskResponseDto = plainToClass(TaskDto, task, { excludeExtraneousValues: true });
+    return taskResponseDto;
   }
 
   @Get()
@@ -26,19 +29,19 @@ export class TasksController {
 
   @Get('find/:id')
   @ApiOperation({ summary: 'Get a task by id' })
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: number) {
     return this.tasksService.findOne(+id);
   }
 
   @Patch('update/:id')
   @ApiOperation({ summary: 'Update a task by id' })
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
+  update(@Param('id') id: number, @Body() updateTaskDto: UpdateTaskDto) {
     return this.tasksService.update(+id, updateTaskDto);
   }
 
   @Delete('remove/:id')
   @ApiOperation({ summary: 'Delete a task by id' })
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: number) {
     return this.tasksService.remove(+id);
   }
 

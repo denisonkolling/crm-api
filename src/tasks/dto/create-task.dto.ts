@@ -1,29 +1,32 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Account } from "src/accounts/entities/account.entity";
-import { Lead } from "src/leads/entities/lead.entity";
-import { Opportunity } from "src/opportunities/entities/opportunity.entity";
+import { Expose } from "class-transformer";
 
 export class CreateTaskDto {
 
     @ApiProperty()
+    @Expose()
     title!: string;
 
     @ApiProperty()
+    @Expose()
     description!: string;
 
     @ApiProperty()
+    @Expose()
     status!: string; // e.g., Pending, Completed, In Progress
 
     @ApiProperty()
+    @Expose()
     dueDate!: Date;
 
     @ApiProperty()
-    account?: Account
+    @Expose()
+    accountId?: number;
 
     @ApiProperty()
-    lead?: Lead;
+    leadId?: number;
 
     @ApiProperty()
-    opportunity?: Opportunity;
+    opportunityId?: number;
 
 }

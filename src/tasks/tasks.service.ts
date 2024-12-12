@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConsoleLogger, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
@@ -6,8 +6,6 @@ import { EntityManager } from '@mikro-orm/postgresql';
 import { AccountsService } from 'src/accounts/accounts.service';
 import { LeadsService } from 'src/leads/leads.service';
 import { OpportunitiesService } from 'src/opportunities/opportunities.service';
-import { TaskResponseDto } from './dto/response-task.dto';
-import { MapperUtil } from 'src/common/utils/mapper.util';
 import { SearchTaskDto } from './dto/search-task.dto';
 import { PaginatedResponse } from 'src/common/dto/pagination.dto';
 
@@ -19,30 +17,31 @@ export class TasksService {
     private readonly accountsService: AccountsService,
     private readonly leadsService: LeadsService,
     private readonly opportunityService: OpportunitiesService,
-
   ) { }
 
-  async create(createDto: CreateTaskDto): Promise<TaskResponseDto> {
+  async create(createDto: CreateTaskDto): Promise<Task> {
     const task = new Task();
 
     const [account, lead, opportunity] = await Promise.all([
-      this.findAccountById(createDto.account.id),
-      this.findLeadById(createDto.lead.id),
-      this.findOpportunityById(createDto.opportunity.id)
+      this.findAccountById(createDto.accountId),
+      this.findLeadById(createDto.leadId),
+      this.findOpportunityById(createDto.opportunityId)
     ]);
 
     task.account = account;
     task.lead = lead;
     task.opportunity = opportunity;
 
-    this.em.assign(task, createDto);
+    //eslint-disable-next-line
+    const { accountId, leadId, opportunityId, ...taskData } = createDto;
+
+    this.em.assign(task, taskData);
 
     await this.em.persistAndFlush(task);
 
-    const responseDto = MapperUtil.mapToDtoExcludeExtraneousValues(TaskResponseDto, task);
+    console.log(task);
 
-    return responseDto;
-
+    return task;
   }
 
   async findAll(): Promise<Task[]> {
@@ -59,8 +58,10 @@ export class TasksService {
 
   async update(id: number, updateTaskDto: UpdateTaskDto): Promise<Task> {
     const task = await this.em.findOne(Task, id);
+    console.log("Entidade task encontrada", task);
     this.em.assign(task, updateTaskDto);
     await this.em.persistAndFlush(task);
+    console.log("Entidade task atualizada", task);
     return task;
   }
 
