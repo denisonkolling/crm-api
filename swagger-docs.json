@@ -445,8 +445,7 @@
           {
             "name": "id",
             "required": true,
-            "in": "query",
-            "description": "Contact ID",
+            "in": "path",
             "schema": {
               "type": "number"
             }
@@ -472,7 +471,7 @@
             "required": true,
             "in": "path",
             "schema": {
-              "type": "string"
+              "type": "number"
             }
           }
         ],
@@ -506,7 +505,7 @@
             "required": true,
             "in": "path",
             "schema": {
-              "type": "string"
+              "type": "number"
             }
           }
         ],
