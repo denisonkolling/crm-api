@@ -4,6 +4,8 @@ import { CreateOpportunityDto } from './dto/create-opportunity.dto';
 import { UpdateOpportunityDto } from './dto/update-opportunity.dto';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { SearchOpportunityDto } from './dto/search-opportunity.dto';
+import { plainToInstance } from 'class-transformer';
+import { OpportunityDto } from './dto/opportunity.dto';
 
 @Controller('opportunities')
 @ApiTags('opportunities')
@@ -34,14 +36,15 @@ export class OpportunitiesController {
   @Get('find/:id')
   @ApiOperation({ summary: 'Get an opportunity by id' })
   findOne(@Param('id') id: number) {
-    console.log('id', id);
-    return this.opportunitiesService.findOne(+id);
+    const opportunity = this.opportunitiesService.findOne(+id);
+    return plainToInstance(OpportunityDto, opportunity, { excludeExtraneousValues: true });
   }
 
   @Patch('update/:id')
   @ApiOperation({ summary: 'Update an opportunity by id' })
   update(@Param('id') id: number, @Body() updateOpportunityDto: UpdateOpportunityDto) {
-    return this.opportunitiesService.update(+id, updateOpportunityDto);
+    const opportunity = this.opportunitiesService.update(+id, updateOpportunityDto);
+    return plainToInstance(OpportunityDto, opportunity, { excludeExtraneousValues: true });
   }
 
   @Delete('remove/:id')
