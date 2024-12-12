@@ -23,21 +23,21 @@ export class LeadDto {
     status: string;
 
     @ApiProperty({ type: ContactDto })
-    @ValidateNested()
-    @Type(() => ContactDto)
+    // @ValidateNested()
     @Expose()
+    @Type(() => ContactDto)
     contact: ContactDto;
 
     @ApiProperty({ type: AccountDto })
-    @ValidateNested()
-    @Type(() => AccountDto)
+    // @ValidateNested()
     @Expose()
+    @Type(() => AccountDto)
     account: AccountDto;
 
     @ApiProperty({ type: CampaignDto })
-    @ValidateNested()
-    @Type(() => CampaignDto)
+    // @ValidateNested()
     @Expose()
+    @Type(() => CampaignDto)
     campaign: CampaignDto;
 
     @ApiProperty()

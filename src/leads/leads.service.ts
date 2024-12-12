@@ -25,15 +25,27 @@ export class LeadsService {
 
   async create(createLeadDto: CreateLeadDto) {
     const lead = new Lead();
-    lead.account = await this.findAccountById(createLeadDto.accountId);
-    lead.campaign = await this.findCampaignById(createLeadDto.campaignId);
-    lead.contact = await this.findContactById(createLeadDto.contactId);
+
+    const [account, campaign, contact] = await Promise.all([
+      this.findAccountById(createLeadDto.accountId),
+      this.findCampaignById(createLeadDto.campaignId),
+      this.findContactById(createLeadDto.contactId)
+    ]);
+
+    lead.account = account;
+    lead.campaign = campaign;
+    lead.contact = contact;
+
     //eslint-disable-next-line
     const { contactId, accountId, campaignId, ...leadData } = createLeadDto;
+
     this.em.assign(lead, leadData);
+
     await this.em.persistAndFlush(lead);
-    const leadResponse = plainToClass(LeadResponseDto, lead, { excludeExtraneousValues: true, });
-    return leadResponse;
+
+    const leadResponseDto = plainToClass(LeadResponseDto, lead, { excludeExtraneousValues: true, });
+
+    return leadResponseDto;
   }
 
   async findAll() {

@@ -4,7 +4,7 @@ import { CreateLeadDto } from './dto/create-lead.dto';
 import { UpdateLeadDto } from './dto/update-lead.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { LeadResponseDto } from './dto/response-lead.dto';
-import { plainToClass } from 'class-transformer';
+import { plainToInstance } from 'class-transformer';
 import { LeadDto } from './dto/lead.dto';
 
 @Controller('leads')
@@ -17,7 +17,7 @@ export class LeadsController {
   @UsePipes(new ValidationPipe({ transform: true }))
   async create(@Body() createLeadDto: CreateLeadDto): Promise<LeadResponseDto> {
     const lead = await this.leadsService.create(createLeadDto);
-    return plainToClass(LeadResponseDto, lead, { excludeExtraneousValues: true });
+    return plainToInstance(LeadResponseDto, lead, { excludeExtraneousValues: true });
   }
 
   @Get()
@@ -30,13 +30,14 @@ export class LeadsController {
   @ApiOperation({ summary: 'Get a lead by id' })
   findOne(@Param('id') id: number) {
     const lead = this.leadsService.findOne(+id);
-    return plainToClass(LeadDto, lead, { excludeExtraneousValues: true });
+    return plainToInstance(LeadDto, lead, { excludeExtraneousValues: true });
   }
 
   @Patch(':id')
   @ApiOperation({ summary: 'Update a lead by id' })
   update(@Param('id') id: number, @Body() updateLeadDto: UpdateLeadDto) {
-    return this.leadsService.update(+id, updateLeadDto);
+    const lead = this.leadsService.update(+id, updateLeadDto);
+    return plainToInstance(LeadResponseDto, lead, { excludeExtraneousValues: true });
   }
 
   @Delete(':id')
