@@ -33,13 +33,16 @@ export class AccountsService {
     return account;
   }
 
-  async findAll({ page, limit, sortBy, sortOrder }: { page: number; limit: number; sortBy: string; sortOrder: 'asc' | 'desc' }): Promise<Account[]> {
+  async findAll({ page, limit, sortBy, sortOrder }: { page: number; limit: number; sortBy: string; sortOrder: 'asc' | 'desc' }): Promise<{ data: Account[]; total: number; page: number; limit: number }> {
     const offset = (page - 1) * limit;
-    return this.em.find(Account, {}, {
+
+    const [data, total] = await this.em.findAndCount(Account, {}, {
       limit,
       offset,
       orderBy: { [sortBy]: sortOrder }
     });
+
+    return { data, total, page, limit };
   }
 
   async findOne(id: number): Promise<Account> {
