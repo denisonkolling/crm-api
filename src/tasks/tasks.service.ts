@@ -1,4 +1,4 @@
-import { ConsoleLogger, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './entities/task.entity';
@@ -44,9 +44,24 @@ export class TasksService {
     return task;
   }
 
-  async findAll(): Promise<Task[]> {
-    return await this.em.find(Task, {});
+
+  async findAll({ page, limit, sortBy, sortOrder }: { page: number; limit: number; sortBy: string; sortOrder: 'asc' | 'desc'; }): Promise<{ data: Task[]; total: number; page: number; limit: number }> {
+    // Calcular o offset baseado na página e limite
+    const offset = (page - 1) * limit;
+
+    // Buscar os dados e o total de oportunidades
+    const [data, total] = await this.em.findAndCount(Task, {}, {
+      limit,
+      offset,
+      orderBy: { [sortBy]: sortOrder },
+    });
+
+    return { data, total, page, limit };
   }
+
+  //async findAll(): Promise<Task[]> {
+  //return await this.em.find(Task, {});
+  //}
 
   async findOne(id: number): Promise<Task> {
     const task = await this.em.findOne(Task, id);

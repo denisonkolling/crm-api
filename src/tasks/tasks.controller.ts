@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, Validation
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { SearchTaskDto } from './dto/search-task.dto';
 import { plainToInstance } from 'class-transformer';
 import { TaskDto } from './dto/task.dto';
@@ -21,10 +21,20 @@ export class TasksController {
     return dto;
   }
 
+
   @Get()
   @ApiOperation({ summary: 'Get all tasks' })
-  findAll() {
-    return this.tasksService.findAll();
+  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number to retrieve (default is 1)' })
+  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Number of tasks to retrieve per page (default is 10)' })
+  @ApiQuery({ name: 'sortBy', required: false, type: String, description: 'Field by which to sort the tasks (default is "id")' })
+  @ApiQuery({ name: 'sortOrder', required: false, enum: ['asc', 'desc'], description: 'Order in which to sort the tasks (default is "asc")' })
+  findAll(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+    @Query('sortBy') sortBy: string = 'id',
+    @Query('sortOrder') sortOrder: 'asc' | 'desc' = 'asc'
+  ) {
+    return this.tasksService.findAll({ page, limit, sortBy, sortOrder });
   }
 
   @Get('find/:id')

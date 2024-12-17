@@ -56,4 +56,8 @@ export class MapperUtil {
         // Converte o objeto processado para a instância do DTO
         return plainToInstance(dtoClass, processedObject, mergedOptions);
     }
+
+    // protected mapToDto<T, D>(dto: new () => D, entities: T[]): D[] {
+    //     return plainToInstance(dto, entities);
+    //   }
 }
