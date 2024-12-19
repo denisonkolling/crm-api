@@ -26,8 +26,16 @@ export class EventsService {
     return event;
   }
 
-  async findAll(): Promise<Event[]> {
-    return await this.em.find(Event, {});
+  async findAll({ page, limit, sortBy, sortOrder }: { page: number; limit: number; sortBy: string; sortOrder: 'asc' | 'desc'; }): Promise<{ data: Event[]; total: number; page: number; limit: number }> {
+    const offset = (page - 1) * limit;
+
+    const [data, total] = await this.em.findAndCount(Event, {}, {
+      limit,
+      offset,
+      orderBy: { [sortBy]: sortOrder },
+    });
+
+    return { data, total, page, limit };
   }
 
   async findOne(id: number): Promise<Event> {

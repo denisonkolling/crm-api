@@ -1,8 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { EventsService } from './events.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @Controller('events')
 @ApiTags('events')
@@ -15,10 +15,19 @@ export class EventsController {
     return this.eventsService.create(createEventDto);
   }
 
-  @Get()
+ @Get()
   @ApiOperation({ summary: 'Get all events' })
-  findAll() {
-    return this.eventsService.findAll();
+  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Page number to retrieve (default is 1)' })
+  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Number of events to retrieve per page (default is 10)' })
+  @ApiQuery({ name: 'sortBy', required: false, type: String, description: 'Field by which to sort the events (default is "id")' })
+  @ApiQuery({ name: 'sortOrder', required: false, enum: ['asc', 'desc'], description: 'Order in which to sort the events (default is "asc")' })
+  findAll(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+    @Query('sortBy') sortBy: string = 'id',
+    @Query('sortOrder') sortOrder: 'asc' | 'desc' = 'asc'
+  ) {
+    return this.eventsService.findAll({ page, limit, sortBy, sortOrder });
   }
 
   @Get(':id')
