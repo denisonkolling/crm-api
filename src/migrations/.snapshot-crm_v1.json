@@ -37,13 +37,12 @@
         },
         "status": {
           "name": "status",
-          "type": "varchar(255)",
+          "type": "CampaignStatus",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 255,
-          "mappedType": "string"
+          "mappedType": "unknown"
         },
         "start_date": {
           "name": "start_date",
@@ -253,15 +252,6 @@
           "nullable": false,
           "length": 255,
           "mappedType": "string"
-        },
-        "account_id": {
-          "name": "account_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "integer"
         },
         "is_deleted": {
           "name": "is_deleted",
@@ -752,33 +742,6 @@
           "length": 255,
           "mappedType": "string"
         },
-        "contact_reference_id": {
-          "name": "contact_reference_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "integer"
-        },
-        "account_reference_id": {
-          "name": "account_reference_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "integer"
-        },
-        "campaign_reference_id": {
-          "name": "campaign_reference_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "integer"
-        },
         "contact_id": {
           "name": "contact_id",
           "type": "int",
@@ -925,33 +888,6 @@
           "nullable": false,
           "length": 6,
           "mappedType": "datetime"
-        },
-        "account_reference_id": {
-          "name": "account_reference_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "integer"
-        },
-        "lead_reference_id": {
-          "name": "lead_reference_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "integer"
-        },
-        "opportunity_reference_id": {
-          "name": "opportunity_reference_id",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "mappedType": "integer"
         },
         "account_id": {
           "name": "account_id",
