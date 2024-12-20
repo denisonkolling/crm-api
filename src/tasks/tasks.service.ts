@@ -59,12 +59,13 @@ export class TasksService {
     return { data, total, page, limit };
   }
 
+  //Old method to get all tasks
   //async findAll(): Promise<Task[]> {
   //return await this.em.find(Task, {});
   //}
 
   async findOne(id: number): Promise<Task> {
-    const task = await this.em.findOne(Task, id);
+    const task = await this.em.findOne(Task, id, { populate: ['account', 'lead', 'opportunity'] });
     if (!task) {
       throw new NotFoundException(`Task with ID ${id} not found`);
     }
